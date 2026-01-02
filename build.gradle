@@ -10,6 +10,19 @@ group = mod_group_id
 
 repositories {
     mavenLocal()
+
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+
+        filter {
+            includeGroup "maven.modrinth"
+        }
+    }
 }
 
 base {
@@ -116,6 +129,12 @@ dependencies {
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
+
+    implementation "maven.modrinth:l_enders-cataclysm:" + cataclysm_version
+    implementation "maven.modrinth:curios:" + curios_api_version
+    implementation "maven.modrinth:lionfish-api:" + lionfish_api_version
+    implementation "maven.modrinth:jade:" + jade_version
+    implementation "maven.modrinth:jei:" + jei_version
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
@@ -131,7 +150,8 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
                              mod_license            : mod_license,
                              mod_version            : mod_version,
                              mod_authors            : mod_authors,
-                             mod_description        : mod_description]
+                             mod_description        : mod_description,
+                             cataclysm_version      : cataclysm_version]
     inputs.properties replaceProperties
     expand replaceProperties
     from "src/main/templates"
