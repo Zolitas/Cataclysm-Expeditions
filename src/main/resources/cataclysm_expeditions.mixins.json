@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "de.zolitas.cataclysmexpeditions.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "AltarOfAbyssEntityMixin",
+    "AltarOfFireEntityMixin",
+    "CataclysmConfigMixin",
+    "CursedTombstoneEntityMixin"
+  ]
+}
