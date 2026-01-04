@@ -13,6 +13,7 @@ public class CataclysmExpeditions {
   private static final Logger LOGGER = LogUtils.getLogger();
 
   public static final ResourceLocation EXPEDITION_DIMENSION_LOCATION = ResourceLocation.fromNamespaceAndPath(MODID, "expedition_world");
+  public static final ResourceLocation EXPEDITION_DIMENSION_LOCATION_NETHER = ResourceLocation.fromNamespaceAndPath(MODID, "expedition_world_nether");
 
   public CataclysmExpeditions(IEventBus modEventBus, ModContainer modContainer) {
     LOGGER.info("Cataclysm Expeditions initialized!");

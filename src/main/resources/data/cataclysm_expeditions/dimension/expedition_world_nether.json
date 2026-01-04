@@ -1,0 +1,10 @@
+{
+  "type": "cataclysm_expeditions:expedition_world_nether",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "cataclysm_expeditions:expedition_world",
+      "layers": []
+    }
+  }
+}

@@ -15,6 +15,7 @@ public enum Expeditions {
   NETHERITE_MONSTROSITY(
       "netherite_monstrosity",
       ResourceLocation.fromNamespaceAndPath("cataclysm", "soul_black_smith"),
+      true,
       data -> {
         BlockPos startPos = data.startPos;
         for (ServerPlayer player : data.players) {
@@ -28,6 +29,9 @@ public enum Expeditions {
 
   @Getter
   private final ResourceLocation structureLocation;
+
+  @Getter
+  private final boolean isNether;
 
   @Getter
   private final Consumer<ExpeditionCallbackData> callback;
