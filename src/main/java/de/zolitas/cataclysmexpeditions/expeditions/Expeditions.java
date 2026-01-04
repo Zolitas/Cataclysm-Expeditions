@@ -22,6 +22,17 @@ public enum Expeditions {
           player.teleportTo(data.level, startPos.getX() + 27.5, startPos.getY() + 37, startPos.getZ() - 38.5, 0, 0);
         }
       }
+  ),
+  RUINED_CITADEL(
+      "ruined_citadel",
+      ResourceLocation.fromNamespaceAndPath("cataclysm", "ruined_citadel"),
+      false,
+      data -> {
+        BlockPos startPos = data.startPos;
+        for (ServerPlayer player : data.players) {
+          player.teleportTo(data.level, startPos.getX() - 22.5, startPos.getY() + 56, startPos.getZ() + 11.5, 270, 0);
+        }
+      }
   );
 
   @Getter
