@@ -1,6 +1,7 @@
 package de.zolitas.cataclysmexpeditions.expeditions;
 
 import de.zolitas.cataclysmexpeditions.CataclysmExpeditions;
+import de.zolitas.cataclysmexpeditions.world.ExpeditionWorldSavedData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
@@ -16,6 +17,7 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraft.world.level.saveddata.SavedData;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -24,6 +26,12 @@ public class ExpeditionUtils {
   public static @Nullable ServerLevel getExpeditionLevel(MinecraftServer server) {
     ResourceKey<Level> levelKey = ResourceKey.create(Registries.DIMENSION, CataclysmExpeditions.EXPEDITION_DIMENSION_LOCATION);
     return server.getLevel(levelKey);
+  }
+
+  public static ExpeditionWorldSavedData getExpeditionWorldSavedData(MinecraftServer server) {
+    ServerLevel expeditionLevel = getExpeditionLevel(server);
+    assert expeditionLevel != null;
+    return expeditionLevel.getDataStorage().computeIfAbsent(new SavedData.Factory<>(ExpeditionWorldSavedData::new, ExpeditionWorldSavedData::load), "expedition_data");
   }
 
   public static void startExpedition(Expeditions expedition, Collection<ServerPlayer> targets, MinecraftServer server, RegistryAccess registryAccess)
@@ -41,18 +49,24 @@ public class ExpeditionUtils {
       throw new ExpeditionException("Expedition structure not found!");
     }
 
-    placeExpeditionStructure(registryAccess, expeditionLevel, structure);
+    int expeditionCounter = getExpeditionWorldSavedData(server).getExpeditionCounter();
+
+    ChunkPos placementChunkPos = new ChunkPos((expeditionCounter % 100) * 100, (expeditionCounter / 100) * 100);
+
+    placeExpeditionStructure(registryAccess, expeditionLevel, structure, placementChunkPos);
+
+    getExpeditionWorldSavedData(server).incrementExpeditionCounter();
 
     ExpeditionCallbackData expeditionCallbackData = ExpeditionCallbackData.builder()
         .players(targets)
         .level(expeditionLevel)
-        .startPos(new BlockPos(0, 0, 0))
+        .startPos(new BlockPos(placementChunkPos.getMinBlockX(), 0, placementChunkPos.getMinBlockZ()))
         .build();
 
     expedition.getCallback().accept(expeditionCallbackData);
   }
 
-  private static void placeExpeditionStructure(RegistryAccess registryAccess, ServerLevel expeditionLevel, Structure structure) throws ExpeditionException {
+  private static void placeExpeditionStructure(RegistryAccess registryAccess, ServerLevel expeditionLevel, Structure structure, ChunkPos placementChunkPos) throws ExpeditionException {
     ChunkGenerator chunkGenerator = expeditionLevel.getChunkSource().getGenerator();
     StructureStart structureStart = structure.generate(
         registryAccess,
@@ -61,7 +75,7 @@ public class ExpeditionUtils {
         expeditionLevel.getChunkSource().randomState(),
         expeditionLevel.getStructureManager(),
         expeditionLevel.getSeed(),
-        new ChunkPos(0, 0),
+        placementChunkPos,
         0,
         expeditionLevel,
         biomeHolder -> true
