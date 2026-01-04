@@ -1,9 +1,9 @@
 {
-  "type": "minecraft:overworld",
+  "type": "cataclysm_expeditions:expedition_world",
   "generator": {
     "type": "minecraft:flat",
     "settings": {
-      "biome": "minecraft:the_void",
+      "biome": "cataclysm_expeditions:expedition_world",
       "layers": []
     }
   }
