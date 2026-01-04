@@ -18,4 +18,8 @@ public class CataclysmExpeditions {
   public CataclysmExpeditions(IEventBus modEventBus, ModContainer modContainer) {
     LOGGER.info("Cataclysm Expeditions initialized!");
   }
+
+  public static boolean isExpeditionDimension(ResourceLocation dimensionLocation) {
+    return dimensionLocation.equals(EXPEDITION_DIMENSION_LOCATION) || dimensionLocation.equals(EXPEDITION_DIMENSION_LOCATION_NETHER);
+  }
 }

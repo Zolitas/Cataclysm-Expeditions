@@ -8,6 +8,8 @@
     "CataclysmConfigMixin",
     "CataclysmJigsawManagerMixin",
     "CursedTombstoneEntityMixin",
-    "RuinedCitadelStructureMixin"
+    "PlayerMixin",
+    "RuinedCitadelStructureMixin",
+    "ServerPlayerMixin"
   ]
 }
