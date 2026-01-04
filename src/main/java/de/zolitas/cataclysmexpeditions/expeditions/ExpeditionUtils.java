@@ -1,13 +1,11 @@
 package de.zolitas.cataclysmexpeditions.expeditions;
 
-import com.mojang.brigadier.arguments.StringArgumentType;
 import de.zolitas.cataclysmexpeditions.CataclysmExpeditions;
-import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -45,10 +43,13 @@ public class ExpeditionUtils {
 
     placeExpeditionStructure(registryAccess, expeditionLevel, structure);
 
+    ExpeditionCallbackData expeditionCallbackData = ExpeditionCallbackData.builder()
+        .players(targets)
+        .level(expeditionLevel)
+        .startPos(new BlockPos(0, 0, 0))
+        .build();
 
-    for (ServerPlayer target : targets) {
-      target.teleportTo(expeditionLevel, 0, 0, 0, 0, 0);
-    }
+    expedition.getCallback().accept(expeditionCallbackData);
   }
 
   private static void placeExpeditionStructure(RegistryAccess registryAccess, ServerLevel expeditionLevel, Structure structure) throws ExpeditionException {
