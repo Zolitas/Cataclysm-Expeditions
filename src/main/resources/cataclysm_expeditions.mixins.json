@@ -6,6 +6,7 @@
     "AltarOfAbyssEntityMixin",
     "AltarOfFireEntityMixin",
     "CataclysmConfigMixin",
+    "CataclysmJigsawManagerMixin",
     "CursedTombstoneEntityMixin"
   ]
 }
