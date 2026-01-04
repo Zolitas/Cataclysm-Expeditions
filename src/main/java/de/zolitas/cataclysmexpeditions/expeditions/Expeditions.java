@@ -23,8 +23,8 @@ public enum Expeditions {
         }
       }
   ),
-  RUINED_CITADEL(
-      "ruined_citadel",
+  ENDER_GUARDIAN(
+      "ender_guardian",
       ResourceLocation.fromNamespaceAndPath("cataclysm", "ruined_citadel"),
       false,
       data -> {
