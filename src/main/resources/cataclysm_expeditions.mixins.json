@@ -7,9 +7,11 @@
     "AltarOfFireEntityMixin",
     "CataclysmConfigMixin",
     "CataclysmJigsawManagerMixin",
+    "CursedPyramidStructureMixin",
     "CursedTombstoneEntityMixin",
     "PlayerMixin",
     "RuinedCitadelStructureMixin",
-    "ServerPlayerMixin"
+    "ServerPlayerMixin",
+    "SunkenCityStructureMixin"
   ]
 }

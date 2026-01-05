@@ -16,35 +16,57 @@ public enum Expeditions {
       "netherite_monstrosity",
       ResourceLocation.fromNamespaceAndPath("cataclysm", "soul_black_smith"),
       true,
-      data -> {
-        BlockPos startPos = data.startPos;
-        for (ServerPlayer player : data.players) {
-          player.teleportTo(data.level, startPos.getX() + 27.5, startPos.getY() + 37, startPos.getZ() - 38.5, 0, 0);
-        }
-      }
+      data -> teleportPlayersToStart(data, 27.5f, 37f, -38.5f, 0)
   ),
   ENDER_GUARDIAN(
       "ender_guardian",
       ResourceLocation.fromNamespaceAndPath("cataclysm", "ruined_citadel"),
       false,
-      data -> {
-        BlockPos startPos = data.startPos;
-        for (ServerPlayer player : data.players) {
-          player.teleportTo(data.level, startPos.getX() - 22.5, startPos.getY() + 56, startPos.getZ() + 11.5, 270, 0);
-        }
-      }
+      data -> teleportPlayersToStart(data, -22.5f, 56f, 11.5f, 270)
   ),
   THE_HARBINGER( //todo: add note that a nether star is required
       "the_harbinger",
       ResourceLocation.fromNamespaceAndPath("cataclysm", "ancient_factory"),
       false,
-      data -> {
-        BlockPos startPos = data.startPos;
-        for (ServerPlayer player : data.players) {
-          player.teleportTo(data.level, startPos.getX() + 58.5, startPos.getY() - 25, startPos.getZ() + 2.5, 0, 0);
-        }
-      }
+      data -> teleportPlayersToStart(data, 58.5f, -25f, 2.5f, 0)
+  ),
+  ANCIENT_REMNANT( //todo: add note that a brush is required
+      "ancient_remnant",
+      ResourceLocation.fromNamespaceAndPath("cataclysm", "cursed_pyramid"),
+      false,
+      data -> teleportPlayersToStart(data, 51.5f, 7f, 111.5f, 180)
+  ),
+  THE_LEVIATHAN( //todo: add note that a heart of the sea is required / fix buried treasure not being present
+      "the_leviathan",
+      ResourceLocation.fromNamespaceAndPath("cataclysm", "sunken_city"),
+      false,
+      data -> teleportPlayersToStart(data, -100.5f, 26f, 23.5f, 270)
+  ),
+  SCYLLA(
+      "scylla",
+      ResourceLocation.fromNamespaceAndPath("cataclysm", "acropolis"),
+      false,
+      data -> teleportPlayersToStart(data, 0.5f, 66f, 42.5f, 0)
+  ),
+  MALEDICTUS(
+      "maledictus",
+      ResourceLocation.fromNamespaceAndPath("cataclysm", "frosted_prison"),
+      false,
+      data -> teleportPlayersToStart(data, 10.5f, -57, 80.5f, 180)
+  ),
+  IGNIS(
+      "ignis",
+      ResourceLocation.fromNamespaceAndPath("cataclysm", "burning_arena"),
+      true,
+      data -> teleportPlayersToStart(data, 42.5f, 32f, 8.5f, 0)
   );
+
+  private static void teleportPlayersToStart(ExpeditionCallbackData data, float offsetX, float offsetY, float offsetZ, int yaw) {
+    BlockPos startPos = data.startPos;
+    for (ServerPlayer player : data.players) {
+      player.teleportTo(data.level, startPos.getX() + offsetX, startPos.getY() + offsetY, startPos.getZ() + offsetZ, yaw, 0);
+    }
+  }
 
   @Getter
   private final String id;
