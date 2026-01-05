@@ -52,7 +52,7 @@ public enum Expeditions {
       "maledictus",
       ResourceLocation.fromNamespaceAndPath("cataclysm", "frosted_prison"),
       false,
-      data -> teleportPlayersToStart(data, 10.5f, -57, 80.5f, 180)
+      data -> teleportPlayersToStart(data, 10.5f, 13, 80.5f, 180)
   ),
   IGNIS(
       "ignis",
