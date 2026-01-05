@@ -33,6 +33,17 @@ public enum Expeditions {
           player.teleportTo(data.level, startPos.getX() - 22.5, startPos.getY() + 56, startPos.getZ() + 11.5, 270, 0);
         }
       }
+  ),
+  THE_HARBINGER( //todo: add note that a nether star is required
+      "the_harbinger",
+      ResourceLocation.fromNamespaceAndPath("cataclysm", "ancient_factory"),
+      false,
+      data -> {
+        BlockPos startPos = data.startPos;
+        for (ServerPlayer player : data.players) {
+          player.teleportTo(data.level, startPos.getX() + 58.5, startPos.getY() - 25, startPos.getZ() + 2.5, 0, 0);
+        }
+      }
   );
 
   @Getter
