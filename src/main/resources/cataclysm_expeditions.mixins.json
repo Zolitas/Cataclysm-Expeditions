@@ -10,6 +10,7 @@
     "CataclysmJigsawStructureMixin",
     "CursedPyramidStructureMixin",
     "CursedTombstoneEntityMixin",
+    "JigsawManagerMixin",
     "PlayerMixin",
     "RuinedCitadelStructureMixin",
     "ServerPlayerMixin",

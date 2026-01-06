@@ -6,6 +6,7 @@ import de.zolitas.cataclysmexpeditions.CataclysmExpeditions;
 import de.zolitas.cataclysmexpeditions.expeditions.ExpeditionException;
 import de.zolitas.cataclysmexpeditions.expeditions.ExpeditionUtils;
 import de.zolitas.cataclysmexpeditions.expeditions.Expeditions;
+import de.zolitas.cataclysmexpeditions.world.ExpeditionWorldUtils;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
@@ -80,6 +81,20 @@ public class ExpeditionCommand {
                                           }
                                         })
                                 )
+                        )
+                )
+                .then(
+                    Commands
+                        .literal("tpToHub")
+                        .then(
+                            Commands
+                                .argument("targets", EntityArgument.players())
+                                .executes(context -> {
+                                  for (ServerPlayer player : EntityArgument.getPlayers(context, "targets")) {
+                                    ExpeditionWorldUtils.teleportToHub(player);
+                                  }
+                                  return 1;
+                                })
                         )
                 )
         );

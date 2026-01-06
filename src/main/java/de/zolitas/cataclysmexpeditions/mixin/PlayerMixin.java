@@ -1,6 +1,6 @@
 package de.zolitas.cataclysmexpeditions.mixin;
 
-import de.zolitas.cataclysmexpeditions.CataclysmExpeditions;
+import de.zolitas.cataclysmexpeditions.world.ExpeditionWorldUtils;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -17,7 +17,7 @@ public class PlayerMixin {
   private boolean shouldKeepInventory(GameRules instance, GameRules.Key<GameRules.BooleanValue> key) {
     Level level = ((Player) (Object) this).level();
 
-    if (CataclysmExpeditions.isExpeditionDimension(level.dimension().location())) {
+    if (ExpeditionWorldUtils.isExpeditionDimension(level.dimension().location())) {
       return true;
     }
 
@@ -28,7 +28,7 @@ public class PlayerMixin {
   private boolean shouldKeepXP(GameRules instance, GameRules.Key<GameRules.BooleanValue> key) {
     Level level = ((Player) (Object) this).level();
 
-    if (CataclysmExpeditions.isExpeditionDimension(level.dimension().location())) {
+    if (ExpeditionWorldUtils.isExpeditionDimension(level.dimension().location())) {
       return true;
     }
 
