@@ -57,7 +57,7 @@ public class ExpeditionWorldUtils {
       throw new RuntimeException("Failed to generate hub structure!", exception);
     }
 
-    player.teleportTo(Objects.requireNonNull(getExpeditionLevel(server, false)), -1609.5, 1, -1604.5, 180, 0);
+    player.teleportTo(Objects.requireNonNull(getExpeditionLevel(server, false)), -1589.5, 1, -1594.5, 0, 0);
   }
 
   private static void generateHubStructure(MinecraftServer server) {
