@@ -1,6 +1,8 @@
 package de.zolitas.cataclysmexpeditions;
 
 import com.mojang.logging.LogUtils;
+import de.zolitas.cataclysmexpeditions.blocks.BlocksRegister;
+import de.zolitas.cataclysmexpeditions.items.ItemsRegister;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -13,5 +15,8 @@ public class CataclysmExpeditions {
 
   public CataclysmExpeditions(IEventBus modEventBus, ModContainer modContainer) {
     LOGGER.info("Cataclysm Expeditions initialized!");
+
+    BlocksRegister.BLOCKS.register(modEventBus);
+    ItemsRegister.ITEMS.register(modEventBus);
   }
 }

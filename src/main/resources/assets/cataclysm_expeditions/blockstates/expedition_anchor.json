@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "cataclysm_expeditions:block/expedition_anchor"
+    }
+  }
+}
