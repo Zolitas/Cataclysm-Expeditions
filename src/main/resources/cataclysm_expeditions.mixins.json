@@ -5,6 +5,7 @@
   "mixins": [
     "AltarOfAbyssEntityMixin",
     "AltarOfFireEntityMixin",
+    "BurningArenaStructureMixin",
     "CataclysmConfigMixin",
     "CataclysmJigsawManagerMixin",
     "CataclysmJigsawStructureMixin",
