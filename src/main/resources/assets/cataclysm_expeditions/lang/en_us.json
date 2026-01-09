@@ -1,5 +1,6 @@
 {
   "block.cataclysm_expeditions.expedition_anchor": "Expedition Anchor",
+  "block.cataclysm_expeditions.return_anchor": "Return Anchor",
   "block.cataclysm_expeditions.expedition_portal": "Expedition Portal",
   "gui.cataclysm_expeditions.expedition_loading": "Expedition loading…",
   "gui.cataclysm_expeditions.expedition_anchor.confirm.title": "Do you want to leave the Expedition?",
