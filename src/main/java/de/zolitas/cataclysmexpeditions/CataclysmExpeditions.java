@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import de.zolitas.cataclysmexpeditions.blocks.BlocksRegister;
 import de.zolitas.cataclysmexpeditions.entities.AttachmentTypesRegister;
 import de.zolitas.cataclysmexpeditions.items.ItemsRegister;
+import de.zolitas.cataclysmexpeditions.network.NetworkRegister;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -20,5 +21,8 @@ public class CataclysmExpeditions {
     BlocksRegister.BLOCKS.register(modEventBus);
     ItemsRegister.ITEMS.register(modEventBus);
     AttachmentTypesRegister.ATTACHMENT_TYPES.register(modEventBus);
+
+    // Register networking payloads
+    modEventBus.addListener(NetworkRegister::register);
   }
 }

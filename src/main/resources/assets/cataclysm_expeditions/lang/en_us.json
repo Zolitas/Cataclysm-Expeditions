@@ -1,5 +1,9 @@
 {
   "block.cataclysm_expeditions.expedition_anchor": "Expedition Anchor",
   "block.cataclysm_expeditions.expedition_portal": "Expedition Portal",
-  "gui.cataclysm_expeditions.expedition_loading": "Expedition loading…"
+  "gui.cataclysm_expeditions.expedition_loading": "Expedition loading…",
+  "gui.cataclysm_expeditions.expedition_anchor.confirm.title": "Do you want to leave the Expedition?",
+  "gui.cataclysm_expeditions.expedition_anchor.confirm.message": "You will be teleported back to the Hub and you won't be able to return to this structure.",
+  "error.cataclysm_expeditions.expedition_anchor.too_far": "You are too far from the Expedition Anchor.",
+  "error.cataclysm_expeditions.expedition_anchor.not_anchor": "That is not a valid Expedition Anchor."
 }
