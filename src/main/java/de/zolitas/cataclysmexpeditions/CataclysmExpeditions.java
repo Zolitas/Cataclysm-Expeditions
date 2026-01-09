@@ -2,6 +2,7 @@ package de.zolitas.cataclysmexpeditions;
 
 import com.mojang.logging.LogUtils;
 import de.zolitas.cataclysmexpeditions.blocks.BlocksRegister;
+import de.zolitas.cataclysmexpeditions.entities.AttachmentTypesRegister;
 import de.zolitas.cataclysmexpeditions.items.ItemsRegister;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -18,5 +19,6 @@ public class CataclysmExpeditions {
 
     BlocksRegister.BLOCKS.register(modEventBus);
     ItemsRegister.ITEMS.register(modEventBus);
+    AttachmentTypesRegister.ATTACHMENT_TYPES.register(modEventBus);
   }
 }

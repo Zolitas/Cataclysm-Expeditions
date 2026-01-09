@@ -6,14 +6,15 @@ import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.util.StringRepresentable;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
 
 @AllArgsConstructor
-public enum Expeditions {
+public enum Expeditions implements StringRepresentable {
   NETHERITE_MONSTROSITY(
       "netherite_monstrosity",
       ResourceLocation.fromNamespaceAndPath("cataclysm", "soul_black_smith"),
@@ -120,5 +121,10 @@ public enum Expeditions {
         .filter(expedition -> expedition.getId().equals(id))
         .findFirst()
         .orElse(null);
+  }
+
+  @Override
+  public @NotNull String getSerializedName() {
+    return id;
   }
 }

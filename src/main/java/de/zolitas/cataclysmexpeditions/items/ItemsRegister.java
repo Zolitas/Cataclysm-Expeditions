@@ -9,4 +9,5 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class ItemsRegister {
   public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(CataclysmExpeditions.MODID);
   public static final DeferredItem<BlockItem> EXPEDITION_ANCHOR_ITEM = ITEMS.registerSimpleBlockItem(BlocksRegister.EXPEDITION_ANCHOR_BLOCK);
+  public static final DeferredItem<BlockItem> EXPEDITION_PORTAL_ITEM = ITEMS.registerSimpleBlockItem(BlocksRegister.EXPEDITION_PORTAL_BLOCK);
 }

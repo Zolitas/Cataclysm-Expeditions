@@ -7,4 +7,5 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class BlocksRegister {
   public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(CataclysmExpeditions.MODID);
   public static final DeferredBlock<ExpeditionAnchorBlock> EXPEDITION_ANCHOR_BLOCK = BLOCKS.register("expedition_anchor", ExpeditionAnchorBlock::new);
+  public static final DeferredBlock<ExpeditionPortalBlock> EXPEDITION_PORTAL_BLOCK = BLOCKS.register("expedition_portal", ExpeditionPortalBlock::new);
 }
