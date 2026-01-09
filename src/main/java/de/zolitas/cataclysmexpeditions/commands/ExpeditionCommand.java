@@ -71,7 +71,8 @@ public class ExpeditionCommand {
                                                 expedition,
                                                 targets,
                                                 context.getSource().getServer(),
-                                                context.getSource().registryAccess()
+                                                context.getSource().registryAccess(),
+                                                exception -> context.getSource().sendFailure(Component.literal(exception.getMessage()))
                                             );
 
                                             return 1;

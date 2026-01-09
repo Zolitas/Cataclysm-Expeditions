@@ -47,15 +47,20 @@ public class ExpeditionPortalBlock extends Block {
     if (entity instanceof ServerPlayer serverPlayer) {
       if (serverPlayer.isSpectator() || serverPlayer.getData(AttachmentTypesRegister.EXPEDITION_PORTAL_COOLDOWN) > 0) return;
 
-      serverPlayer.setData(AttachmentTypesRegister.EXPEDITION_PORTAL_COOLDOWN, 60);
+      serverPlayer.setData(AttachmentTypesRegister.EXPEDITION_PORTAL_COOLDOWN, 100);
 
       Expeditions expedition = state.getValue(EXPEDITION_PROPERTY);
-      try {
-        ExpeditionUtils.startExpedition(expedition, List.of(serverPlayer), serverPlayer.getServer(), serverPlayer.registryAccess());
-      } catch (ExpeditionException exception) {
-        ExpeditionWorldUtils.teleportToHub(serverPlayer);
-        serverPlayer.sendSystemMessage(Component.literal(exception.getMessage()).withStyle(ChatFormatting.RED));
-      }
+
+      ExpeditionUtils.startExpedition(
+          expedition,
+          List.of(serverPlayer),
+          serverPlayer.getServer(),
+          serverPlayer.registryAccess(),
+          exception -> {
+            serverPlayer.sendSystemMessage(Component.literal(exception.getMessage()).withStyle(ChatFormatting.RED));
+            ExpeditionWorldUtils.teleportToHub(serverPlayer);
+          }
+      );
     }
   }
 

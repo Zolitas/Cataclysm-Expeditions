@@ -20,6 +20,10 @@ import net.minecraft.world.level.saveddata.SavedData;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.BiConsumer;
 
 public class ExpeditionWorldUtils {
   private static final ResourceLocation EXPEDITION_DIMENSION_LOCATION = ResourceLocation.fromNamespaceAndPath(CataclysmExpeditions.MODID, "expedition_world");
@@ -51,23 +55,22 @@ public class ExpeditionWorldUtils {
       throw new IllegalStateException("Server of player is null!");
     }
 
-    try {
-      generateHubStructure(server);
-    } catch (Exception exception) {
-      throw new RuntimeException("Failed to generate hub structure!", exception);
-    }
-
-    player.teleportTo(Objects.requireNonNull(getExpeditionLevel(server, false)), -1589.5, 1, -1594.5, 0, 0);
+    generateHubStructure(server).whenComplete((unused, ex) -> {
+      if (ex != null) {
+        throw new RuntimeException("Failed to generate hub structure!", ex);
+      }
+      player.teleportTo(Objects.requireNonNull(getExpeditionLevel(server, false)), -1589.5, 1, -1594.5, 0, 0);
+    });
   }
 
-  private static void generateHubStructure(MinecraftServer server) {
+  private static CompletableFuture<Void> generateHubStructure(MinecraftServer server) {
     ServerLevel level = getExpeditionLevel(server, false);
     assert level != null;
 
     ExpeditionWorldSavedData expeditionWorldSavedData = getExpeditionWorldSavedData(level);
 
     if (expeditionWorldSavedData.isHubGenerated()) {
-      return;
+      return CompletableFuture.completedFuture(null);
     }
 
     ChunkGenerator chunkGenerator = level.getChunkSource().getGenerator();
@@ -93,33 +96,74 @@ public class ExpeditionWorldUtils {
 
     assert structureStart.isValid();
 
-    placeStructure(level, chunkGenerator, structureStart);
-    expeditionWorldSavedData.setHubGenerated(true);
+    return placeStructure(level, chunkGenerator, structureStart)
+        .thenRun(() -> expeditionWorldSavedData.setHubGenerated(true));
   }
 
-  public static void placeStructure(ServerLevel level, ChunkGenerator chunkGenerator, StructureStart structureStart) {
+  public static CompletableFuture<Void> placeStructure(ServerLevel level, ChunkGenerator chunkGenerator, StructureStart structureStart) {
+    return placeStructure(level, chunkGenerator, structureStart, null);
+  }
+
+  public static CompletableFuture<Void> placeStructure(ServerLevel level, ChunkGenerator chunkGenerator,
+                                                       StructureStart structureStart, @Nullable BiConsumer<Integer, Integer> progressHandler) {
     BoundingBox boundingBox = structureStart.getBoundingBox();
     ChunkPos chunkPos1 = new ChunkPos(SectionPos.blockToSectionCoord(boundingBox.minX()), SectionPos.blockToSectionCoord(boundingBox.minZ()));
     ChunkPos chunkPos2 = new ChunkPos(SectionPos.blockToSectionCoord(boundingBox.maxX()), SectionPos.blockToSectionCoord(boundingBox.maxZ()));
 
-    ChunkPos
-        .rangeClosed(chunkPos1, chunkPos2)
-        .forEach(chunkPos -> {
-          structureStart.placeInChunk(
-              level,
-              level.structureManager(),
-              chunkGenerator,
-              level.getRandom(),
-              new BoundingBox(
-                  chunkPos.getMinBlockX(),
-                  level.getMinBuildHeight(),
-                  chunkPos.getMinBlockZ(),
-                  chunkPos.getMaxBlockX(),
-                  level.getMaxBuildHeight(),
-                  chunkPos.getMaxBlockZ()
-              ),
-              chunkPos
-          );
-        });
+    List<ChunkPos> chunks = new ArrayList<>();
+    ChunkPos.rangeClosed(chunkPos1, chunkPos2).forEach(chunks::add);
+
+    CompletableFuture<Void> future = new CompletableFuture<>();
+    MinecraftServer server = level.getServer();
+
+    final int BATCH_SIZE = 2; // place a few chunks per tick to avoid long stalls
+    final int[] index = {0};
+    final int total = chunks.size();
+
+    Runnable runBatch = new Runnable() {
+      @Override
+      public void run() {
+        try {
+          int placed = 0;
+          while (index[0] < chunks.size() && placed < BATCH_SIZE) {
+            ChunkPos chunkPos = chunks.get(index[0]);
+            structureStart.placeInChunk(
+                level,
+                level.structureManager(),
+                chunkGenerator,
+                level.getRandom(),
+                new BoundingBox(
+                    chunkPos.getMinBlockX(),
+                    level.getMinBuildHeight(),
+                    chunkPos.getMinBlockZ(),
+                    chunkPos.getMaxBlockX(),
+                    level.getMaxBuildHeight(),
+                    chunkPos.getMaxBlockZ()
+                ),
+                chunkPos
+            );
+            placed++;
+            index[0]++;
+
+            if (progressHandler != null) {
+              progressHandler.accept(index[0], total);
+            }
+          }
+
+          if (index[0] < chunks.size()) {
+            // schedule next batch next tick
+            server.execute(this);
+          } else {
+            future.complete(null);
+          }
+        } catch (Exception exception) {
+          future.completeExceptionally(exception);
+        }
+      }
+    };
+
+    server.execute(runBatch);
+
+    return future;
   }
 }

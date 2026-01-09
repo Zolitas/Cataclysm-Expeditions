@@ -1,4 +1,5 @@
 {
   "block.cataclysm_expeditions.expedition_anchor": "Expedition Anchor",
-  "block.cataclysm_expeditions.expedition_portal": "Expedition Portal"
+  "block.cataclysm_expeditions.expedition_portal": "Expedition Portal",
+  "gui.cataclysm_expeditions.expedition_loading": "Expedition loading…"
 }
