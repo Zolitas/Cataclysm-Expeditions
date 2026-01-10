@@ -1,13 +1,8 @@
 package de.zolitas.cataclysmexpeditions.blocks;
 
 import de.zolitas.cataclysmexpeditions.client.screens.ExpeditionAnchorConfirmScreen;
-import de.zolitas.cataclysmexpeditions.world.ExpeditionWorldUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
@@ -82,7 +77,7 @@ public class ExpeditionAnchorBlock extends Block {
                                                      @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
     // Open confirmation on client; actual teleport handled server-side upon confirm
     if (level.isClientSide()) {
-      Minecraft.getInstance().setScreen(new ExpeditionAnchorConfirmScreen(pos));
+      ExpeditionAnchorConfirmScreen.createAndSetScreen(pos);
     }
     return ItemInteractionResult.SUCCESS;
   }

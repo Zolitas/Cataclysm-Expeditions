@@ -40,37 +40,24 @@ public class ExpeditionUtils {
       return;
     }
 
+    ExpeditionLobby lobby = ExpeditionLobbyUtils.createLobby(expedition);
+    targets.forEach(lobby::addPlayer);
+
     int expeditionCounter = ExpeditionWorldUtils.getExpeditionWorldSavedData(server, expedition.isNether()).getExpeditionCounter();
 
     ChunkPos placementChunkPos = new ChunkPos((expeditionCounter % 100) * 100, (expeditionCounter / 100) * 100);
 
-    // bossbar to indicate loading progressHandler
-    ServerBossEvent bossBar = new ServerBossEvent(
-        Component.translatable("gui.cataclysm_expeditions.expedition_loading"),
-        BossEvent.BossBarColor.PURPLE,
-        BossEvent.BossBarOverlay.PROGRESS
-    );
-    bossBar.setProgress(0);
-    bossBar.setVisible(true);
-    for (ServerPlayer player : targets) {
-      bossBar.addPlayer(player);
-    }
-
     BiConsumer<Integer, Integer> progressHandler = (placed, total) -> {
       try {
-        bossBar.setProgress((float) placed / total);
+        lobby.setGenerationProgress((float) placed / total);
       }
       catch (Exception exception) {
-        bossBar.setProgress(0);
+        lobby.setGenerationProgress(0);
       }
     };
 
     placeExpeditionStructure(registryAccess, expeditionLevel, structure, placementChunkPos, progressHandler)
         .thenRun(() -> {
-          bossBar.setProgress(1);
-          bossBar.setVisible(false);
-          bossBar.removeAllPlayers();
-
           ExpeditionWorldUtils.getExpeditionWorldSavedData(server, expedition.isNether()).incrementExpeditionCounter();
 
           ExpeditionCallbackData expeditionCallbackData = ExpeditionCallbackData.builder()
@@ -80,10 +67,13 @@ public class ExpeditionUtils {
               .build();
 
           expedition.getCallback().accept(expeditionCallbackData);
+
+          lobby.finishedGenerating();
+          lobby.setCallbackData(expeditionCallbackData);
+          lobby.teleportAllPlayers();
         })
         .exceptionally(exception -> {
-          bossBar.setVisible(false);
-          bossBar.removeAllPlayers();
+          ExpeditionLobbyUtils.deleteLobby(expedition);
           exceptionHandler.accept(new ExpeditionException(exception.getMessage()));
           return null;
         });

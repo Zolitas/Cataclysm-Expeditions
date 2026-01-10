@@ -2,9 +2,7 @@ package de.zolitas.cataclysmexpeditions.blocks;
 
 import de.zolitas.cataclysmexpeditions.CataclysmExpeditions;
 import de.zolitas.cataclysmexpeditions.entities.AttachmentTypesRegister;
-import de.zolitas.cataclysmexpeditions.expeditions.ExpeditionException;
-import de.zolitas.cataclysmexpeditions.expeditions.ExpeditionUtils;
-import de.zolitas.cataclysmexpeditions.expeditions.Expeditions;
+import de.zolitas.cataclysmexpeditions.expeditions.*;
 import de.zolitas.cataclysmexpeditions.world.ExpeditionWorldUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -50,6 +48,12 @@ public class ExpeditionPortalBlock extends Block {
       serverPlayer.setData(AttachmentTypesRegister.EXPEDITION_PORTAL_COOLDOWN, 100);
 
       Expeditions expedition = state.getValue(EXPEDITION_PROPERTY);
+
+      ExpeditionLobby lobby = ExpeditionLobbyUtils.getLobby(expedition);
+      if (lobby != null) {
+        lobby.addPlayer(serverPlayer, true);
+        return;
+      }
 
       ExpeditionUtils.startExpedition(
           expedition,
