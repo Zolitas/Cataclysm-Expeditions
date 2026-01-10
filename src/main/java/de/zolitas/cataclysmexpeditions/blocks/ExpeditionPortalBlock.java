@@ -24,7 +24,7 @@ import java.util.List;
 
 @EventBusSubscriber(modid = CataclysmExpeditions.MODID)
 public class ExpeditionPortalBlock extends Block {
-  public static final EnumProperty<Expeditions> EXPEDITION_PROPERTY = EnumProperty.create("expedition", Expeditions.class);
+  public static final EnumProperty<Expedition> EXPEDITION_PROPERTY = EnumProperty.create("expedition", Expedition.class);
 
   public ExpeditionPortalBlock() {
     super(
@@ -47,7 +47,7 @@ public class ExpeditionPortalBlock extends Block {
 
       serverPlayer.setData(AttachmentTypesRegister.EXPEDITION_PORTAL_COOLDOWN, 100);
 
-      Expeditions expedition = state.getValue(EXPEDITION_PROPERTY);
+      Expedition expedition = state.getValue(EXPEDITION_PROPERTY);
 
       ExpeditionLobby lobby = ExpeditionLobbyUtils.getLobby(expedition);
       if (lobby != null) {

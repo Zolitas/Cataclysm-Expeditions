@@ -1,7 +1,6 @@
 package de.zolitas.cataclysmexpeditions.expeditions;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerBossEvent;
@@ -15,7 +14,7 @@ public class ExpeditionLobby {
   public static final int TTL = 600;
   public static final int MAX_PLAYER_COUNT = 4;
 
-  private final Expeditions expedition;
+  private final Expedition expedition;
 
   @Getter
   @Setter
@@ -32,7 +31,7 @@ public class ExpeditionLobby {
       BossEvent.BossBarOverlay.PROGRESS
   );
 
-  public ExpeditionLobby(Expeditions expedition) {
+  public ExpeditionLobby(Expedition expedition) {
     this.expedition = expedition;
     bossBar.setProgress(0);
   }

@@ -13,9 +13,9 @@ import java.util.Set;
 
 @EventBusSubscriber(modid = CataclysmExpeditions.MODID)
 public class ExpeditionLobbyUtils {
-  private static final Map<Expeditions, ExpeditionLobby> expeditionLobbies = new HashMap<>();
+  private static final Map<Expedition, ExpeditionLobby> expeditionLobbies = new HashMap<>();
 
-  public static ExpeditionLobby createLobby(Expeditions expedition) {
+  public static ExpeditionLobby createLobby(Expedition expedition) {
     ExpeditionLobby existingLobby = getLobby(expedition);
     if (existingLobby != null) return existingLobby;
 
@@ -24,17 +24,17 @@ public class ExpeditionLobbyUtils {
     return lobby;
   }
 
-  public static void deleteLobby(Expeditions expedition) {
+  public static void deleteLobby(Expedition expedition) {
     expeditionLobbies.remove(expedition);
   }
 
-  public static @Nullable ExpeditionLobby getLobby(Expeditions expedition) {
+  public static @Nullable ExpeditionLobby getLobby(Expedition expedition) {
     return expeditionLobbies.get(expedition);
   }
 
   @SubscribeEvent
   private static void onServerTick(ServerTickEvent.Post event) {
-    Set<Expeditions> expeditionsToRemove = new HashSet<>();
+    Set<Expedition> expeditionsToRemove = new HashSet<>();
 
     expeditionLobbies.forEach((expedition, expeditionLobby) -> {
       if (!expeditionLobby.isFinishedGenerating()) return;

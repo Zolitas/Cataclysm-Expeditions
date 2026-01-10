@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.StringRepresentable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -14,7 +13,7 @@ import java.util.Arrays;
 import java.util.function.Consumer;
 
 @AllArgsConstructor
-public enum Expeditions implements StringRepresentable {
+public enum Expedition implements StringRepresentable {
   NETHERITE_MONSTROSITY(
       "netherite_monstrosity",
       ResourceLocation.fromNamespaceAndPath("cataclysm", "soul_black_smith"),
@@ -111,9 +110,9 @@ public enum Expeditions implements StringRepresentable {
   @Getter
   private final Consumer<ExpeditionCallbackData> callback;
 
-  public static @Nullable Expeditions getById(String id) {
+  public static @Nullable Expedition getById(String id) {
     return Arrays
-        .stream(Expeditions.values())
+        .stream(Expedition.values())
         .filter(expedition -> expedition.getId().equals(id))
         .findFirst()
         .orElse(null);
