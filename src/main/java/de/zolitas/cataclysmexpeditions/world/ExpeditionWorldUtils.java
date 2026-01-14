@@ -1,5 +1,6 @@
 package de.zolitas.cataclysmexpeditions.world;
 
+import com.mojang.math.Transformation;
 import de.zolitas.cataclysmexpeditions.CataclysmExpeditions;
 import de.zolitas.cataclysmexpeditions.expeditions.DetailedPosition;
 import de.zolitas.cataclysmexpeditions.expeditions.Expedition;
@@ -26,6 +27,8 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import java.util.Objects;
 import java.util.ArrayList;
@@ -130,6 +133,22 @@ public class ExpeditionWorldUtils {
       level.addFreshEntity(lobbyTextDisplay);
 
       getExpeditionWorldSavedData(level).setLobbyDisplay(expedition, lobbyTextDisplay.getStringUUID());
+
+      Display.TextDisplay expeditionTextDisplay = new Display.TextDisplay(EntityType.TEXT_DISPLAY, level);
+      expeditionTextDisplay.setPos(uiPosition.getX(), uiPosition.getY() + 1.4, uiPosition.getZ());
+      expeditionTextDisplay.setYRot(uiPosition.getYaw());
+      expeditionTextDisplay.setText(expedition.getDisplayComponent());
+
+      expeditionTextDisplay.setTransformation(
+          new Transformation(
+              new Vector3f(0, 0, 0),
+              new Quaternionf(),
+              new Vector3f(1.25f),
+              new Quaternionf()
+          )
+      );
+
+      level.addFreshEntity(expeditionTextDisplay);
     }
   }
 

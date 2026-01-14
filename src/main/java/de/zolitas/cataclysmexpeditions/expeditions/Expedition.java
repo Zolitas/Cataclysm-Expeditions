@@ -3,7 +3,11 @@ package de.zolitas.cataclysmexpeditions.expeditions;
 import de.zolitas.cataclysmexpeditions.blocks.BlocksRegister;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +24,7 @@ public enum Expedition implements StringRepresentable {
       true,
       new DetailedPosition(27.5f, 37f, -38.5f, 0),
       new DetailedPosition(-1581.5f, 2f, -1582.5f, 90),
+      Component.literal("Netherite\nMonstrosity").withStyle(getDisplayStyle()),
       data -> {
         placeExpeditionAnchor(data, 27, 37, -35);
       }
@@ -30,6 +35,7 @@ public enum Expedition implements StringRepresentable {
       false,
       new DetailedPosition(-22.5f, 56f, 11.5f, 270),
       new DetailedPosition(-1597.5f, 2f, -1582.5f, -90),
+      Component.literal("Ender\nGuardian").withStyle(getDisplayStyle()),
       data -> {
         placeExpeditionAnchor(data, -4, 54, 14);
       }
@@ -40,6 +46,7 @@ public enum Expedition implements StringRepresentable {
       false,
       new DetailedPosition(58.5f, -25f, 2.5f, 0),
       new DetailedPosition(-1581.5f, 2f, -1574.5f, 90),
+      Component.literal("The Harbinger").withStyle(getDisplayStyle()),
       data -> {
         placeExpeditionAnchor(data, 58, -25, 13);
       }
@@ -50,6 +57,7 @@ public enum Expedition implements StringRepresentable {
       false,
       new DetailedPosition(51.5f, 7f, 111.5f, 180),
       new DetailedPosition(-1597.5f, 2f, -1574.5f, -90),
+      Component.literal("Ancient\nRemnant").withStyle(getDisplayStyle()),
       data -> {
         placeExpeditionAnchor(data, 53, 7, 105);
       }
@@ -60,6 +68,7 @@ public enum Expedition implements StringRepresentable {
       false,
       new DetailedPosition(-100.5f, 26f, 23.5f, 270),
       new DetailedPosition(-1581.5f, 2f, -1566.5f, 90),
+      Component.literal("The Leviathan").withStyle(getDisplayStyle()),
       data -> {
         placeExpeditionAnchor(data, -87, 26, 26);
       }
@@ -70,6 +79,7 @@ public enum Expedition implements StringRepresentable {
       false,
       new DetailedPosition(0.5f, 66f, 42.5f, 0),
       new DetailedPosition(-1597.5f, 2f, -1566.5f, -90),
+      Component.literal("Scylla").withStyle(getDisplayStyle()),
       data -> {
         placeExpeditionAnchor(data, 5, 92, 47);
         placeExpeditionAnchor(data, 99, 185, 24);
@@ -82,6 +92,7 @@ public enum Expedition implements StringRepresentable {
       false,
       new DetailedPosition(10.5f, 13f, 80.5f, 180),
       new DetailedPosition(-1581.5f, 2f, -1558.5f, 90),
+      Component.literal("Maledictus").withStyle(getDisplayStyle()),
       data -> {
         placeExpeditionAnchor(data, 13, 17, 72);
         placeExpeditionAnchor(data, 27, 17, -12);
@@ -93,10 +104,15 @@ public enum Expedition implements StringRepresentable {
       true,
       new DetailedPosition(42.5f, 32f, 8.5f, 0),
       new DetailedPosition(-1597.5f, 2f, -1558.5f, -90),
+      Component.literal("Ignis").withStyle(getDisplayStyle()),
       data -> {
         placeExpeditionAnchor(data, 42, 32, 25);
       }
   );
+
+  private static Style getDisplayStyle() {
+    return Style.EMPTY.withColor(TextColor.fromRgb(0xd19ffc));
+  }
 
   private static void placeExpeditionAnchor(ExpeditionCallbackData data, int offsetX, int offsetY, int offsetZ) {
     BlockPos anchorPos = data.startPos.offset(offsetX, offsetY, offsetZ);
@@ -117,6 +133,9 @@ public enum Expedition implements StringRepresentable {
 
   @Getter
   private final DetailedPosition uiPosition;
+
+  @Getter
+  private final Component displayComponent;
 
   @Getter
   private final Consumer<ExpeditionCallbackData> callback;

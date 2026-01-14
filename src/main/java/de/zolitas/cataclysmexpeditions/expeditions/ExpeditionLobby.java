@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
@@ -117,7 +119,7 @@ public class ExpeditionLobby {
       component.append("\n - ");
     }
 
-    component.append("\n\u231B " + ttl / 20 + "s");
+    component.append(Component.literal("\n\u231B " + ttl / 20 + "s").withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xaa5bf0))));
 
     lobbyTextDisplay.setText(component);
   }
