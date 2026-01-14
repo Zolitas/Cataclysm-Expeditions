@@ -3,7 +3,7 @@ package de.zolitas.cataclysmexpeditions.expeditions;
 import lombok.Data;
 
 @Data
-public class TeleportationOffset {
+public class DetailedPosition {
   private final float x;
   private final float y;
   private final float z;

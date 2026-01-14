@@ -37,7 +37,7 @@ public class ExpeditionUtils {
       return;
     }
 
-    ExpeditionLobby lobby = ExpeditionLobbyUtils.createLobby(expedition);
+    ExpeditionLobby lobby = ExpeditionLobbyUtils.createLobby(expedition, server);
     targets.forEach(lobby::addPlayer);
 
     int expeditionCounter = ExpeditionWorldUtils.getExpeditionWorldSavedData(server, expedition.isNether()).getExpeditionCounter();

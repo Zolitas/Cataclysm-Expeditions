@@ -1,6 +1,8 @@
 package de.zolitas.cataclysmexpeditions.world;
 
 import de.zolitas.cataclysmexpeditions.CataclysmExpeditions;
+import de.zolitas.cataclysmexpeditions.expeditions.DetailedPosition;
+import de.zolitas.cataclysmexpeditions.expeditions.Expedition;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.SectionPos;
@@ -10,6 +12,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Display;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -97,7 +101,23 @@ public class ExpeditionWorldUtils {
     assert structureStart.isValid();
 
     return placeStructure(level, chunkGenerator, structureStart)
-        .thenRun(() -> expeditionWorldSavedData.setHubGenerated(true));
+        .thenRun(() -> {
+          expeditionWorldSavedData.setHubGenerated(true);
+
+          createLobbyDisplays(level);
+        });
+  }
+
+  public static void createLobbyDisplays(ServerLevel level) {
+    for (Expedition expedition : Expedition.values()) {
+      Display.TextDisplay lobbyTextDisplay = new Display.TextDisplay(EntityType.TEXT_DISPLAY, level);
+      DetailedPosition uiPosition = expedition.getUiPosition();
+      lobbyTextDisplay.setPos(uiPosition.getX(), uiPosition.getY(), uiPosition.getZ());
+      lobbyTextDisplay.setYRot(uiPosition.getYaw());
+      level.addFreshEntity(lobbyTextDisplay);
+
+      getExpeditionWorldSavedData(level).setLobbyDisplay(expedition, lobbyTextDisplay.getStringUUID());
+    }
   }
 
   public static CompletableFuture<Void> placeStructure(ServerLevel level, ChunkGenerator chunkGenerator, StructureStart structureStart) {

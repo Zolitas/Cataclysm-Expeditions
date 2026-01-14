@@ -1,14 +1,21 @@
 package de.zolitas.cataclysmexpeditions.expeditions;
 
+import de.zolitas.cataclysmexpeditions.world.ExpeditionWorldUtils;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerBossEvent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.BossEvent;
+import net.minecraft.world.entity.Display;
+import net.minecraft.world.entity.Entity;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 public class ExpeditionLobby {
   public static final int TTL = 600;
@@ -24,6 +31,8 @@ public class ExpeditionLobby {
   @Getter
   private boolean finishedGenerating = false;
 
+  private final Display.TextDisplay lobbyTextDisplay;
+
   private final Set<ServerPlayer> players = new HashSet<>();
   private final ServerBossEvent bossBar = new ServerBossEvent(
       Component.translatable("gui.cataclysm_expeditions.expedition_loading"),
@@ -31,9 +40,32 @@ public class ExpeditionLobby {
       BossEvent.BossBarOverlay.PROGRESS
   );
 
-  public ExpeditionLobby(Expedition expedition) {
+  public ExpeditionLobby(Expedition expedition, MinecraftServer server) {
     this.expedition = expedition;
     bossBar.setProgress(0);
+    lobbyTextDisplay = getLobbyTextDisplay(expedition, server);
+  }
+
+  private static Display.TextDisplay getLobbyTextDisplay(Expedition expedition, MinecraftServer server) {
+    ServerLevel expeditionLevel = ExpeditionWorldUtils.getExpeditionLevel(server, false);
+    assert expeditionLevel != null;
+    String lobbyDisplayUUID = ExpeditionWorldUtils.getExpeditionWorldSavedData(expeditionLevel).getLobbyDisplayUUID(expedition);
+    if (lobbyDisplayUUID == null) return null;
+    Entity lobbyDisplay = expeditionLevel.getEntity(UUID.fromString(lobbyDisplayUUID));
+
+    if (!(lobbyDisplay instanceof Display.TextDisplay textDisplay)) {
+      return null;
+    }
+    return textDisplay;
+  }
+
+  public void removed() {
+    bossBar.removeAllPlayers();
+    bossBar.setVisible(false);
+
+    if (lobbyTextDisplay != null) {
+      lobbyTextDisplay.setText(Component.empty());
+    }
   }
 
   public void finishedGenerating() {
@@ -48,6 +80,7 @@ public class ExpeditionLobby {
 
   public void decreaseTTL() {
     ttl--;
+    if (ttl % 20 == 0) updateLobbyTextDisplay();
   }
 
   public void addPlayer(ServerPlayer player) {
@@ -63,6 +96,30 @@ public class ExpeditionLobby {
 
     players.add(player);
     if (teleportInstantly) teleportPlayer(player);
+
+    if (lobbyTextDisplay != null) {
+      updateLobbyTextDisplay();
+    }
+  }
+
+  private void updateLobbyTextDisplay() {
+    if (lobbyTextDisplay == null) return;
+
+    MutableComponent component = Component.empty();
+
+    boolean first = true;
+    for (ServerPlayer player : players) {
+      component.append((first ? "" : "\n") + player.getName().getString());
+      first = false;
+    }
+
+    for (int i = 0; i < MAX_PLAYER_COUNT - players.size(); i++) {
+      component.append("\n - ");
+    }
+
+    component.append("\n\u231B " + ttl / 20 + "s");
+
+    lobbyTextDisplay.setText(component);
   }
 
   public void teleportAllPlayers() {
