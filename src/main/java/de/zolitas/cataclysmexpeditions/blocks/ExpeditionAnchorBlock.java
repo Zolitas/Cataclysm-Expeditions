@@ -39,6 +39,10 @@ public class ExpeditionAnchorBlock extends Block {
     );
   }
 
+  public ExpeditionAnchorBlock(Properties properties) {
+    super(properties);
+  }
+
   @Override
   protected @NotNull VoxelShape getCollisionShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
     return COLLISION_SHAPE;
