@@ -16,23 +16,36 @@ import net.minecraft.world.entity.Display;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.saveddata.SavedData;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.level.LevelEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
+@EventBusSubscriber(modid = CataclysmExpeditions.MODID)
 public class ExpeditionWorldUtils {
   private static final ResourceLocation EXPEDITION_DIMENSION_LOCATION = ResourceLocation.fromNamespaceAndPath(CataclysmExpeditions.MODID, "expedition_world");
   private static final ResourceLocation EXPEDITION_DIMENSION_LOCATION_NETHER = ResourceLocation.fromNamespaceAndPath(CataclysmExpeditions.MODID, "expedition_world_nether");
   public static final ResourceLocation HUB_STRUCTURE_LOCATION = ResourceLocation.fromNamespaceAndPath(CataclysmExpeditions.MODID, "hub");
+
+  private static final Set<ChunkPos> hubChunks = Set.of(
+      new ChunkPos(-99, -99),
+      new ChunkPos(-99, -98),
+      new ChunkPos(-100, -98),
+      new ChunkPos(-100, -99)
+  );
 
   public static boolean isExpeditionDimension(ResourceLocation dimensionLocation) {
     return dimensionLocation.equals(EXPEDITION_DIMENSION_LOCATION) || dimensionLocation.equals(EXPEDITION_DIMENSION_LOCATION_NETHER);
@@ -185,5 +198,24 @@ public class ExpeditionWorldUtils {
     server.execute(runBatch);
 
     return future;
+  }
+
+  @SubscribeEvent
+  private static void onLevelLoad(LevelEvent.Load event) {
+    handleHubChunkForce(true, event.getLevel());
+  }
+
+  @SubscribeEvent
+  private static void onLevelUnload(LevelEvent.Unload event) {
+    handleHubChunkForce(false, event.getLevel());
+  }
+
+  private static void handleHubChunkForce(boolean add, LevelAccessor level) {
+    if (level.isClientSide()) return;
+    if (!(level instanceof ServerLevel serverLevel)) return;
+    if (!serverLevel.dimension().location().equals(EXPEDITION_DIMENSION_LOCATION)) return;
+    for (ChunkPos hubChunk : hubChunks) {
+      serverLevel.setChunkForced(hubChunk.x, hubChunk.z, add);
+    }
   }
 }
