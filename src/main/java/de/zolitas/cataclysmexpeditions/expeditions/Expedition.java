@@ -25,6 +25,7 @@ public enum Expedition implements StringRepresentable {
       new DetailedPosition(27.5f, 37f, -38.5f, 0),
       new DetailedPosition(-1581.5f, 2f, -1582.5f, 90),
       Component.literal("Netherite\nMonstrosity").withStyle(getDisplayStyle()),
+      null,
       data -> {
         placeExpeditionAnchor(data, 27, 37, -35);
       }
@@ -36,39 +37,43 @@ public enum Expedition implements StringRepresentable {
       new DetailedPosition(-22.5f, 56f, 11.5f, 270),
       new DetailedPosition(-1597.5f, 2f, -1582.5f, -90),
       Component.literal("Ender\nGuardian").withStyle(getDisplayStyle()),
+      null,
       data -> {
         placeExpeditionAnchor(data, -4, 54, 14);
       }
   ),
-  THE_HARBINGER( //todo: add note that a nether star is required
+  THE_HARBINGER(
       "the_harbinger",
       ResourceLocation.fromNamespaceAndPath("cataclysm", "ancient_factory"),
       false,
       new DetailedPosition(58.5f, -25f, 2.5f, 0),
       new DetailedPosition(-1581.5f, 2f, -1574.5f, 90),
       Component.literal("The Harbinger").withStyle(getDisplayStyle()),
+      Component.translatable("display.cataclysm_expeditions.note.the_harbinger").withStyle(getNoteStyle()),
       data -> {
         placeExpeditionAnchor(data, 58, -25, 13);
       }
   ),
-  ANCIENT_REMNANT( //todo: add note that a brush is required
+  ANCIENT_REMNANT(
       "ancient_remnant",
       ResourceLocation.fromNamespaceAndPath("cataclysm", "cursed_pyramid"),
       false,
       new DetailedPosition(51.5f, 7f, 111.5f, 180),
       new DetailedPosition(-1597.5f, 2f, -1574.5f, -90),
       Component.literal("Ancient\nRemnant").withStyle(getDisplayStyle()),
+      Component.translatable("display.cataclysm_expeditions.note.ancient_remnant").withStyle(getNoteStyle()),
       data -> {
         placeExpeditionAnchor(data, 53, 7, 105);
       }
   ),
-  THE_LEVIATHAN( //todo: add note that a heart of the sea is required / fix buried treasure not being present
+  THE_LEVIATHAN(
       "the_leviathan",
       ResourceLocation.fromNamespaceAndPath("cataclysm", "sunken_city"),
       false,
       new DetailedPosition(-100.5f, 26f, 23.5f, 270),
       new DetailedPosition(-1581.5f, 2f, -1566.5f, 90),
       Component.literal("The Leviathan").withStyle(getDisplayStyle()),
+      Component.translatable("display.cataclysm_expeditions.note.the_leviathan").withStyle(getNoteStyle()),
       data -> {
         placeExpeditionAnchor(data, -87, 26, 26);
       }
@@ -80,6 +85,7 @@ public enum Expedition implements StringRepresentable {
       new DetailedPosition(0.5f, 66f, 42.5f, 0),
       new DetailedPosition(-1597.5f, 2f, -1566.5f, -90),
       Component.literal("Scylla").withStyle(getDisplayStyle()),
+      null,
       data -> {
         placeExpeditionAnchor(data, 5, 92, 47);
         placeExpeditionAnchor(data, 99, 185, 24);
@@ -93,6 +99,7 @@ public enum Expedition implements StringRepresentable {
       new DetailedPosition(10.5f, 13f, 80.5f, 180),
       new DetailedPosition(-1581.5f, 2f, -1558.5f, 90),
       Component.literal("Maledictus").withStyle(getDisplayStyle()),
+      null,
       data -> {
         placeExpeditionAnchor(data, 13, 17, 72);
         placeExpeditionAnchor(data, 27, 17, -12);
@@ -105,6 +112,7 @@ public enum Expedition implements StringRepresentable {
       new DetailedPosition(42.5f, 32f, 8.5f, 0),
       new DetailedPosition(-1597.5f, 2f, -1558.5f, -90),
       Component.literal("Ignis").withStyle(getDisplayStyle()),
+      null,
       data -> {
         placeExpeditionAnchor(data, 42, 32, 25);
       }
@@ -112,6 +120,10 @@ public enum Expedition implements StringRepresentable {
 
   private static Style getDisplayStyle() {
     return Style.EMPTY.withColor(TextColor.fromRgb(0xd19ffc));
+  }
+
+  private static Style getNoteStyle() {
+    return Style.EMPTY.withColor(ChatFormatting.RED);
   }
 
   private static void placeExpeditionAnchor(ExpeditionCallbackData data, int offsetX, int offsetY, int offsetZ) {
@@ -136,6 +148,10 @@ public enum Expedition implements StringRepresentable {
 
   @Getter
   private final Component displayComponent;
+
+  @Getter
+  @Nullable
+  private final Component noteComponent;
 
   @Getter
   private final Consumer<ExpeditionCallbackData> callback;

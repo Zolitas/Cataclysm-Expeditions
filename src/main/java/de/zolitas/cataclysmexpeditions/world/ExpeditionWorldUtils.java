@@ -148,6 +148,25 @@ public class ExpeditionWorldUtils {
           )
       );
 
+      if (expedition.getNoteComponent() != null) {
+        Display.TextDisplay noteTextDisplay = new Display.TextDisplay(EntityType.TEXT_DISPLAY, level);
+        noteTextDisplay.setPos(uiPosition.getX() + (uiPosition.getYaw() < 0 ? .5 : -.5), uiPosition.getY() + 2.8, uiPosition.getZ());
+        noteTextDisplay.setYRot(uiPosition.getYaw());
+        noteTextDisplay.setText(expedition.getNoteComponent());
+        noteTextDisplay.setLineWidth(100);
+
+        noteTextDisplay.setTransformation(
+            new Transformation(
+                new Vector3f(0, 0, 0),
+                new Quaternionf(),
+                new Vector3f(.75f),
+                new Quaternionf()
+            )
+        );
+
+        level.addFreshEntity(noteTextDisplay);
+      }
+
       level.addFreshEntity(expeditionTextDisplay);
     }
   }
