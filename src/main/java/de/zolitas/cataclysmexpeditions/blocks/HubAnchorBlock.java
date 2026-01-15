@@ -19,6 +19,7 @@ public class HubAnchorBlock extends ExpeditionAnchorBlock {
         Properties.of()
             .lightLevel(value -> 5)
             .noOcclusion()
+            .strength(3F, 100.0F)
     );
   }
 
