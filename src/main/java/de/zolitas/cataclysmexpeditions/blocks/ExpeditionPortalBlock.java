@@ -45,7 +45,7 @@ public class ExpeditionPortalBlock extends Block {
     if (entity instanceof ServerPlayer serverPlayer) {
       if (serverPlayer.isSpectator() || serverPlayer.getData(AttachmentTypesRegister.EXPEDITION_PORTAL_COOLDOWN) > 0) return;
 
-      serverPlayer.setData(AttachmentTypesRegister.EXPEDITION_PORTAL_COOLDOWN, 100);
+      serverPlayer.setData(AttachmentTypesRegister.EXPEDITION_PORTAL_COOLDOWN, 10);
 
       Expedition expedition = state.getValue(EXPEDITION_PROPERTY);
 
