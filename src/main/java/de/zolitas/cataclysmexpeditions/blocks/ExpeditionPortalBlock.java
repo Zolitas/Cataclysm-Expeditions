@@ -68,7 +68,15 @@ public class ExpeditionPortalBlock extends Block {
           serverPlayer.getServer(),
           serverPlayer.registryAccess(),
           exception -> {
-            serverPlayer.sendSystemMessage(Component.literal(exception.getMessage()).withStyle(ChatFormatting.RED));
+            Component component = exception.getComponent();
+
+            if (component instanceof MutableComponent mutableComponent) {
+              serverPlayer.sendSystemMessage(mutableComponent.withStyle(ChatFormatting.RED));
+            }
+            else {
+              serverPlayer.sendSystemMessage(component);
+            }
+
             ExpeditionWorldUtils.teleportToHub(serverPlayer);
           }
       );

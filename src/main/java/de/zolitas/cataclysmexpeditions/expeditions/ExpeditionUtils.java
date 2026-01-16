@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,7 +26,7 @@ public class ExpeditionUtils {
     ServerLevel expeditionLevel = ExpeditionWorldUtils.getExpeditionLevel(server, expedition.isNether());
 
     if (expeditionLevel == null) {
-      exceptionHandler.accept(new ExpeditionException("Expedition dimension not found!"));
+      exceptionHandler.accept(new ExpeditionException(Component.translatable("error.cataclysm_expeditions.start.no_dimension")));
       return;
     }
 
@@ -33,7 +34,7 @@ public class ExpeditionUtils {
     Structure structure = structureRegistry.get(expedition.getStructureLocation());
 
     if (structure == null) {
-      exceptionHandler.accept(new ExpeditionException("Expedition structure not found!"));
+      exceptionHandler.accept(new ExpeditionException(Component.translatable("error.cataclysm_expeditions.start.no_structure")));
       return;
     }
 
@@ -71,7 +72,7 @@ public class ExpeditionUtils {
         })
         .exceptionally(exception -> {
           ExpeditionLobbyUtils.deleteLobby(expedition);
-          exceptionHandler.accept(new ExpeditionException(exception.getMessage()));
+          exceptionHandler.accept(new ExpeditionException(Component.literal(exception.getMessage())));
           return null;
         });
   }
@@ -95,7 +96,7 @@ public class ExpeditionUtils {
     );
 
     if (!structureStart.isValid()) {
-      return CompletableFuture.failedFuture(new ExpeditionException("Expedition structure could not be generated!"));
+      return CompletableFuture.failedFuture(new ExpeditionException(Component.translatable("error.cataclysm_expeditions.structure_generation_failed")));
     }
 
     return ExpeditionWorldUtils.placeStructure(expeditionLevel, chunkGenerator, structureStart, progressHandler);
