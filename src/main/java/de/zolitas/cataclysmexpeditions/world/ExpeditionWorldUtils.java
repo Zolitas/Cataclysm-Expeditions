@@ -150,10 +150,10 @@ public class ExpeditionWorldUtils {
 
       if (expedition.getNoteComponent() != null) {
         Display.TextDisplay noteTextDisplay = new Display.TextDisplay(EntityType.TEXT_DISPLAY, level);
-        noteTextDisplay.setPos(uiPosition.getX() + (uiPosition.getYaw() < 0 ? .5 : -.5), uiPosition.getY() + 2.8, uiPosition.getZ());
+        noteTextDisplay.setPos(uiPosition.getX() + (uiPosition.getYaw() < 0 ? .5 : -.5), uiPosition.getY() + 2.6, uiPosition.getZ());
         noteTextDisplay.setYRot(uiPosition.getYaw());
         noteTextDisplay.setText(expedition.getNoteComponent());
-        noteTextDisplay.setLineWidth(100);
+        noteTextDisplay.setLineWidth(200);
 
         noteTextDisplay.setTransformation(
             new Transformation(
