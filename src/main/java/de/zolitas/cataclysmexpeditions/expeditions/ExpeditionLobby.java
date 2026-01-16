@@ -1,5 +1,6 @@
 package de.zolitas.cataclysmexpeditions.expeditions;
 
+import de.zolitas.cataclysmexpeditions.entities.AttachmentTypesRegister;
 import de.zolitas.cataclysmexpeditions.world.ExpeditionWorldUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -93,10 +94,14 @@ public class ExpeditionLobby {
     if (ttl <= 0) return;
     if (players.size() >= MAX_PLAYER_COUNT) return;
     if (players.contains(player)) return;
+    if (player.getData(AttachmentTypesRegister.EXPEDITION_COOLDOWNS.get(expedition)) > 0) return;
 
     bossBar.addPlayer(player);
 
     players.add(player);
+
+    player.setData(AttachmentTypesRegister.EXPEDITION_COOLDOWNS.get(expedition), 144000);
+
     if (teleportInstantly) teleportPlayer(player);
 
     if (lobbyTextDisplay != null) {

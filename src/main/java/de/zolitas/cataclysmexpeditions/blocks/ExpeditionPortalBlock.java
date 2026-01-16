@@ -7,6 +7,7 @@ import de.zolitas.cataclysmexpeditions.world.ExpeditionWorldUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -55,6 +56,12 @@ public class ExpeditionPortalBlock extends Block {
         return;
       }
 
+      int expeditionCooldown = serverPlayer.getData(AttachmentTypesRegister.EXPEDITION_COOLDOWNS.get(expedition));
+      if (expeditionCooldown > 0) {
+        serverPlayer.displayClientMessage(getExpeditionCooldownComponent(expeditionCooldown), true);
+        return;
+      }
+
       ExpeditionUtils.startExpedition(
           expedition,
           List.of(serverPlayer),
@@ -66,6 +73,28 @@ public class ExpeditionPortalBlock extends Block {
           }
       );
     }
+  }
+
+  private static @NotNull MutableComponent getExpeditionCooldownComponent(int expeditionCooldown) {
+    int totalSeconds = expeditionCooldown / 20;
+    int expeditionCooldownHours = totalSeconds / 3600;
+    int expeditionCooldownMinutes = (totalSeconds % 3600) / 60;
+    int expeditionCooldownSeconds = totalSeconds % 60;
+
+    MutableComponent cooldownComponent = Component
+        .translatable("error.cataclysm_expeditions.expedition_cooldown")
+        .withStyle(ChatFormatting.RED);
+
+    if (expeditionCooldownHours > 0) {
+      cooldownComponent.append(Component.literal(expeditionCooldownHours + "h "));
+    }
+
+    if (expeditionCooldownMinutes > 0 || expeditionCooldownHours > 0) {
+      cooldownComponent.append(Component.literal(expeditionCooldownMinutes + "m "));
+    }
+
+    cooldownComponent.append(Component.literal(expeditionCooldownSeconds + "s"));
+    return cooldownComponent;
   }
 
   @SubscribeEvent

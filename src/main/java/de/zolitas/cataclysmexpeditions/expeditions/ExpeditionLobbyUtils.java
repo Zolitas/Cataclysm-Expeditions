@@ -1,9 +1,12 @@
 package de.zolitas.cataclysmexpeditions.expeditions;
 
 import de.zolitas.cataclysmexpeditions.CataclysmExpeditions;
+import de.zolitas.cataclysmexpeditions.entities.AttachmentTypesRegister;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 
 import javax.annotation.Nullable;
@@ -46,5 +49,19 @@ public class ExpeditionLobbyUtils {
     });
 
     expeditionsToRemove.forEach(ExpeditionLobbyUtils::deleteLobby);
+  }
+
+  @SubscribeEvent
+  private static void onPlayerTick(PlayerTickEvent.Post event) {
+    Player player = event.getEntity();
+
+    if (player.level().isClientSide()) return;
+
+    AttachmentTypesRegister.EXPEDITION_COOLDOWNS.forEach((expedition, cooldown) -> {
+      int cdValue = player.getData(cooldown);
+      if (cdValue > 0) {
+        player.setData(cooldown, cdValue - 1);
+      }
+    });
   }
 }
