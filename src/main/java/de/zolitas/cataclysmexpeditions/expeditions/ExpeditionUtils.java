@@ -1,5 +1,6 @@
 package de.zolitas.cataclysmexpeditions.expeditions;
 
+import de.zolitas.cataclysmexpeditions.config.CataclysmExpeditionsConfig;
 import de.zolitas.cataclysmexpeditions.world.ExpeditionWorldUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
@@ -43,7 +44,11 @@ public class ExpeditionUtils {
 
     int expeditionCounter = ExpeditionWorldUtils.getExpeditionWorldSavedData(server, expedition.isNether()).getExpeditionCounter();
 
-    ChunkPos placementChunkPos = new ChunkPos((expeditionCounter % 100) * 100, (expeditionCounter / 100) * 100);
+    int distance = CataclysmExpeditionsConfig.CONFIG.distanceBetweenExpeditionStructures.get();
+    ChunkPos placementChunkPos = new ChunkPos(
+        (expeditionCounter % distance) * distance,
+        (expeditionCounter / distance) * distance
+    );
 
     BiConsumer<Integer, Integer> progressHandler = (placed, total) -> {
       try {

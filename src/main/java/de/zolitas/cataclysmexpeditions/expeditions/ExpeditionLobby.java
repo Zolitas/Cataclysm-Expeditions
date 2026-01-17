@@ -1,5 +1,6 @@
 package de.zolitas.cataclysmexpeditions.expeditions;
 
+import de.zolitas.cataclysmexpeditions.config.CataclysmExpeditionsConfig;
 import de.zolitas.cataclysmexpeditions.entities.AttachmentTypesRegister;
 import de.zolitas.cataclysmexpeditions.world.ExpeditionWorldUtils;
 import lombok.Getter;
@@ -21,16 +22,13 @@ import java.util.Set;
 import java.util.UUID;
 
 public class ExpeditionLobby {
-  public static final int TTL = 600;
-  public static final int MAX_PLAYER_COUNT = 4;
-
   private final Expedition expedition;
 
   @Getter
   @Setter
   private ExpeditionCallbackData callbackData = null;
   @Getter
-  private int ttl = TTL;
+  private int ttl = CataclysmExpeditionsConfig.CONFIG.expeditionLobbyTtl.get();
   @Getter
   private boolean finishedGenerating = false;
 
@@ -92,7 +90,7 @@ public class ExpeditionLobby {
 
   public void addPlayer(ServerPlayer player, boolean teleportInstantly) {
     if (ttl <= 0) return;
-    if (players.size() >= MAX_PLAYER_COUNT) return;
+    if (players.size() >= CataclysmExpeditionsConfig.CONFIG.maxExpeditionPlayerCount.get()) return;
     if (players.contains(player)) return;
     if (player.getData(AttachmentTypesRegister.EXPEDITION_COOLDOWNS.get(expedition)) > 0) return;
 
@@ -100,7 +98,10 @@ public class ExpeditionLobby {
 
     players.add(player);
 
-    player.setData(AttachmentTypesRegister.EXPEDITION_COOLDOWNS.get(expedition), 144000);
+    player.setData(
+        AttachmentTypesRegister.EXPEDITION_COOLDOWNS.get(expedition),
+        CataclysmExpeditionsConfig.CONFIG.expeditionCooldown.get()
+    );
 
     if (teleportInstantly) teleportPlayer(player);
 
@@ -120,7 +121,7 @@ public class ExpeditionLobby {
       first = false;
     }
 
-    for (int i = 0; i < MAX_PLAYER_COUNT - players.size(); i++) {
+    for (int i = 0; i < CataclysmExpeditionsConfig.CONFIG.maxExpeditionPlayerCount.get() - players.size(); i++) {
       component.append("\n - ");
     }
 
