@@ -3,6 +3,7 @@ package de.zolitas.cataclysmexpeditions;
 import com.mojang.logging.LogUtils;
 import de.zolitas.cataclysmexpeditions.blocks.BlocksRegister;
 import de.zolitas.cataclysmexpeditions.config.CataclysmExpeditionsConfig;
+import de.zolitas.cataclysmexpeditions.config.ConditionRegister;
 import de.zolitas.cataclysmexpeditions.entities.AttachmentTypesRegister;
 import de.zolitas.cataclysmexpeditions.items.ItemsRegister;
 import de.zolitas.cataclysmexpeditions.network.NetworkRegister;
@@ -20,13 +21,13 @@ public class CataclysmExpeditions {
   public CataclysmExpeditions(IEventBus modEventBus, ModContainer modContainer) {
     LOGGER.info("Cataclysm Expeditions initialized!");
 
-    modContainer.registerConfig(ModConfig.Type.SERVER, CataclysmExpeditionsConfig.CONFIG_SPEC);
+    modContainer.registerConfig(ModConfig.Type.STARTUP, CataclysmExpeditionsConfig.CONFIG_SPEC);
 
     BlocksRegister.BLOCKS.register(modEventBus);
     ItemsRegister.ITEMS.register(modEventBus);
     AttachmentTypesRegister.ATTACHMENT_TYPES.register(modEventBus);
+    ConditionRegister.CONDITION_CODECS.register(modEventBus);
 
-    // Register networking payloads
     modEventBus.addListener(NetworkRegister::register);
   }
 }

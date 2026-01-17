@@ -11,6 +11,7 @@ public class CataclysmExpeditionsConfig {
   public final ModConfigSpec.ConfigValue<Integer> expeditionLobbyTtl;
   public final ModConfigSpec.ConfigValue<Integer> expeditionCooldown;
   public final ModConfigSpec.ConfigValue<Integer> distanceBetweenExpeditionStructures;
+  public final ModConfigSpec.ConfigValue<Boolean> hubAnchorRecipeEnabled;
 
   private CataclysmExpeditionsConfig(ModConfigSpec.Builder builder) {
     maxExpeditionPlayerCount = builder
@@ -28,6 +29,10 @@ public class CataclysmExpeditionsConfig {
     distanceBetweenExpeditionStructures = builder
         .comment("Distance between the expedition structures in chunks")
         .defineInRange("distanceBetweenExpeditionStructures", 100, 10, Integer.MAX_VALUE);
+
+    hubAnchorRecipeEnabled = builder
+        .comment("Enables the recipe for the hub anchor that is needed to enter the hub. If you disable this setting, you will have to implement another way to get to the hub yourself")
+        .define("hubAnchorRecipeEnabled", true);
   }
 
   static {

@@ -1,4 +1,10 @@
 {
+  "neoforge:conditions": [
+    {
+      "type": "cataclysm_expeditions:hub_anchor_recipe_enabled"
+    }
+  ],
+
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
