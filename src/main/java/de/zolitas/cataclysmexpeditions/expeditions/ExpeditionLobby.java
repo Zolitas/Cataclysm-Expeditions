@@ -2,7 +2,6 @@ package de.zolitas.cataclysmexpeditions.expeditions;
 
 import de.zolitas.cataclysmexpeditions.config.CataclysmExpeditionsConfig;
 import de.zolitas.cataclysmexpeditions.entities.AttachmentTypesRegister;
-import de.zolitas.cataclysmexpeditions.world.ExpeditionWorldUtils;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.network.chat.Component;
@@ -11,15 +10,12 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerBossEvent;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.entity.Display;
-import net.minecraft.world.entity.Entity;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 public class ExpeditionLobby {
   private final Expedition expedition;
@@ -44,20 +40,7 @@ public class ExpeditionLobby {
   public ExpeditionLobby(Expedition expedition, MinecraftServer server) {
     this.expedition = expedition;
     bossBar.setProgress(0);
-    lobbyTextDisplay = getLobbyTextDisplay(expedition, server);
-  }
-
-  private static Display.TextDisplay getLobbyTextDisplay(Expedition expedition, MinecraftServer server) {
-    ServerLevel expeditionLevel = ExpeditionWorldUtils.getExpeditionLevel(server, false);
-    assert expeditionLevel != null;
-    String lobbyDisplayUUID = ExpeditionWorldUtils.getExpeditionWorldSavedData(expeditionLevel).getLobbyDisplayUUID(expedition);
-    if (lobbyDisplayUUID == null) return null;
-    Entity lobbyDisplay = expeditionLevel.getEntity(UUID.fromString(lobbyDisplayUUID));
-
-    if (!(lobbyDisplay instanceof Display.TextDisplay textDisplay)) {
-      return null;
-    }
-    return textDisplay;
+    lobbyTextDisplay = ExpeditionLobbyUtils.getLobbyTextDisplay(expedition, server);
   }
 
   public void removed() {
