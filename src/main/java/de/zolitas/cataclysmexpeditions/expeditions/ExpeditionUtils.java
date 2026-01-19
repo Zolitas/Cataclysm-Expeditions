@@ -1,5 +1,6 @@
 package de.zolitas.cataclysmexpeditions.expeditions;
 
+import de.zolitas.cataclysmexpeditions.blocks.BlocksRegister;
 import de.zolitas.cataclysmexpeditions.config.CataclysmExpeditionsConfig;
 import de.zolitas.cataclysmexpeditions.world.ExpeditionWorldUtils;
 import net.minecraft.core.BlockPos;
@@ -11,6 +12,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
@@ -63,10 +66,14 @@ public class ExpeditionUtils {
         .thenRun(() -> {
           ExpeditionWorldUtils.getExpeditionWorldSavedData(server, expedition.isNether()).incrementExpeditionCounter();
 
+          BlockPos startPos = new BlockPos(placementChunkPos.getMinBlockX(), 0, placementChunkPos.getMinBlockZ());
+          
+          placeExpeditionStructureBoundary(expeditionLevel, expedition.getStructureBoundaryOffsets(), startPos);
+
           ExpeditionCallbackData expeditionCallbackData = ExpeditionCallbackData.builder()
               .players(targets)
               .level(expeditionLevel)
-              .startPos(new BlockPos(placementChunkPos.getMinBlockX(), 0, placementChunkPos.getMinBlockZ()))
+              .startPos(startPos)
               .build();
 
           expedition.getCallback().accept(expeditionCallbackData);
@@ -105,5 +112,57 @@ public class ExpeditionUtils {
     }
 
     return ExpeditionWorldUtils.placeStructure(expeditionLevel, chunkGenerator, structureStart, progressHandler);
+  }
+
+  private static void placeExpeditionStructureBoundary(ServerLevel level, BlockPosPair boundaryOffsets, BlockPos startPos) {
+    int minX = startPos.getX() + Math.min(boundaryOffsets.getFirstPos().getX(), boundaryOffsets.getSecondPos().getX());
+    int maxX = startPos.getX() + Math.max(boundaryOffsets.getFirstPos().getX(), boundaryOffsets.getSecondPos().getX());
+    int minY = startPos.getY() + Math.min(boundaryOffsets.getFirstPos().getY(), boundaryOffsets.getSecondPos().getY());
+    int maxY = startPos.getY() + Math.max(boundaryOffsets.getFirstPos().getY(), boundaryOffsets.getSecondPos().getY());
+    int minZ = startPos.getZ() + Math.min(boundaryOffsets.getFirstPos().getZ(), boundaryOffsets.getSecondPos().getZ());
+    int maxZ = startPos.getZ() + Math.max(boundaryOffsets.getFirstPos().getZ(), boundaryOffsets.getSecondPos().getZ());
+
+    BlockState barrier = Blocks.BARRIER.defaultBlockState();
+    BlockState voidDeath = BlocksRegister.VOID_DEATH_BLOCK.get().defaultBlockState();
+    BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+    int flags = 2 | 16;
+
+    // bottom
+    for (int x = minX; x <= maxX; x++) {
+      for (int z = minZ; z <= maxZ; z++) {
+        level.setBlock(pos.set(x, minY + 2, z), voidDeath, flags);
+        level.setBlock(pos.set(x, minY + 1, z), voidDeath, flags);
+        level.setBlock(pos.set(x, minY, z), voidDeath, flags);
+      }
+    }
+
+    // top
+    for (int x = minX; x <= maxX; x++) {
+      for (int z = minZ; z <= maxZ; z++) {
+        level.setBlock(pos.set(x, maxY, z), barrier, flags);
+        level.setBlock(pos.set(x, maxY - 1, z), barrier, flags);
+      }
+    }
+
+    int wallMinY = minY + 2;
+    int wallMaxY = maxY - 2;
+
+    for (int layer = 0; layer < 2; layer++) {
+      for (int z = minZ; z <= maxZ; z++) {
+        for (int y = wallMinY; y <= wallMaxY; y++) {
+          level.setBlock(pos.set(minX + layer, y, z), barrier, flags);
+          level.setBlock(pos.set(maxX - layer, y, z), barrier, flags);
+        }
+      }
+    }
+
+    for (int layer = 0; layer < 2; layer++) {
+      for (int x = minX + 2; x <= maxX - 2; x++) {
+        for (int y = wallMinY; y <= wallMaxY; y++) {
+          level.setBlock(pos.set(x, y, minZ + layer), barrier, flags);
+          level.setBlock(pos.set(x, y, maxZ - layer), barrier, flags);
+        }
+      }
+    }
   }
 }
