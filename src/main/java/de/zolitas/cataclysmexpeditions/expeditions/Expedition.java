@@ -10,6 +10,7 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -123,6 +124,13 @@ public enum Expedition implements StringRepresentable {
       null,
       data -> {
         placeExpeditionAnchor(data, 42, 32, 25);
+
+        // removing the netherrack ceiling that gets shipped with the structure
+        for (int xOffset = 11; xOffset <= 73; xOffset++) {
+          for (int zOffset = 12; zOffset <= 70; zOffset++) {
+            data.level.setBlock(data.startPos.offset(xOffset, 101, zOffset), Blocks.AIR.defaultBlockState(), 2 | 16);
+          }
+        }
       }
   );
 
