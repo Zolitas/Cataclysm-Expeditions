@@ -46,6 +46,7 @@ public class ExpeditionUtils {
     targets.forEach(lobby::addPlayer);
 
     int expeditionCounter = ExpeditionWorldUtils.getExpeditionWorldSavedData(server, expedition.isNether()).getExpeditionCounter();
+    ExpeditionWorldUtils.getExpeditionWorldSavedData(server, expedition.isNether()).incrementExpeditionCounter();
 
     int distance = CataclysmExpeditionsConfig.CONFIG.distanceBetweenExpeditionStructures.get();
     ChunkPos placementChunkPos = new ChunkPos(
@@ -64,8 +65,6 @@ public class ExpeditionUtils {
 
     placeExpeditionStructure(registryAccess, expeditionLevel, structure, placementChunkPos, progressHandler)
         .thenRun(() -> {
-          ExpeditionWorldUtils.getExpeditionWorldSavedData(server, expedition.isNether()).incrementExpeditionCounter();
-
           BlockPos startPos = new BlockPos(placementChunkPos.getMinBlockX(), 0, placementChunkPos.getMinBlockZ());
           
           placeExpeditionStructureBoundary(expeditionLevel, expedition.getStructureBoundaryOffsets(), startPos);
