@@ -84,6 +84,10 @@ public class ExpeditionLobby {
     if (ttl % 20 == 0) updateLobbyTextDisplay();
   }
 
+  public boolean containsPlayer(ServerPlayer player) {
+    return players.contains(player);
+  }
+
   public void addPlayer(ServerPlayer player) {
     addPlayer(player, false);
   }

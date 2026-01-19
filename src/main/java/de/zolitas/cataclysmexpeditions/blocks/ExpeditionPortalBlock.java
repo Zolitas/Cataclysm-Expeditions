@@ -62,6 +62,10 @@ public class ExpeditionPortalBlock extends Block {
         return;
       }
 
+      for (ExpeditionLobby expeditionLobby : ExpeditionLobbyUtils.getLobbies()) {
+        if (expeditionLobby.containsPlayer(serverPlayer)) return;
+      }
+
       ExpeditionUtils.startExpedition(
           expedition,
           List.of(serverPlayer),

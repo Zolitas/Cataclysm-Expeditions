@@ -34,6 +34,10 @@ public class ExpeditionLobbyUtils {
     return expeditionLobbies.get(expedition);
   }
 
+  public static Collection<ExpeditionLobby> getLobbies() {
+    return expeditionLobbies.values();
+  }
+
   @SubscribeEvent
   private static void onServerTick(ServerTickEvent.Post event) {
     Set<Expedition> expeditionsToRemove = new HashSet<>();
