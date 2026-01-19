@@ -1,0 +1,19 @@
+{
+  "block.cataclysm_expeditions.expedition_anchor": "Expeditionsanker",
+  "block.cataclysm_expeditions.return_anchor": "Rückkehranker",
+  "block.cataclysm_expeditions.hub_anchor": "Hub-Anker",
+  "block.cataclysm_expeditions.expedition_portal": "Expeditionsportal",
+  "block.cataclysm_expeditions.void_death_block": "Leerentod-Block",
+  "gui.cataclysm_expeditions.expedition_loading": "Expedition wird geladen…",
+  "gui.cataclysm_expeditions.expedition_anchor.confirm.title": "Möchtest du die Expedition verlassen?",
+  "gui.cataclysm_expeditions.expedition_anchor.confirm.message": "Du wirst zurück zum Hub teleportiert und kannst nicht mehr zu diesem Bauwerk zurückkehren.",
+  "error.cataclysm_expeditions.expedition_anchor.too_far": "Du bist zu weit vom Expeditionsanker entfernt.",
+  "error.cataclysm_expeditions.expedition_anchor.not_anchor": "Das ist kein gültiger Expeditionsanker.",
+  "error.cataclysm_expeditions.start.no_dimension": "Expeditionsdimension nicht gefunden!",
+  "error.cataclysm_expeditions.start.no_structure": "Expeditionsbauwerk nicht gefunden!",
+  "error.cataclysm_expeditions.structure_generation_failed": "Expeditionsbauwerk konnte nicht generiert werden!",
+  "error.cataclysm_expeditions.expedition_cooldown": "Du hast noch Abklingzeit für diese Expedition: ",
+  "display.cataclysm_expeditions.note.the_harbinger": "Benötigt einen Netherstern zum Beschwören",
+  "display.cataclysm_expeditions.note.ancient_remnant": "Benötigt einen Pinsel zum Beschwören",
+  "display.cataclysm_expeditions.note.the_leviathan": "Benötigt ein Herz des Meeres zum Beschwören"
+}
