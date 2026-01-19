@@ -2,6 +2,7 @@ package de.zolitas.cataclysmexpeditions.world;
 
 import com.mojang.math.Transformation;
 import de.zolitas.cataclysmexpeditions.CataclysmExpeditions;
+import de.zolitas.cataclysmexpeditions.config.CataclysmExpeditionsConfig;
 import de.zolitas.cataclysmexpeditions.expeditions.DetailedPosition;
 import de.zolitas.cataclysmexpeditions.expeditions.Expedition;
 import net.minecraft.core.Registry;
@@ -187,7 +188,7 @@ public class ExpeditionWorldUtils {
     CompletableFuture<Void> future = new CompletableFuture<>();
     MinecraftServer server = level.getServer();
 
-    final int BATCH_SIZE = 2; // place a few chunks per tick to avoid long stalls
+    final int BATCH_SIZE = CataclysmExpeditionsConfig.CONFIG.structureGenerationBatchSize.get(); // place a few chunks per tick to avoid long stalls
     final int[] index = {0};
     final int total = chunks.size();
 
