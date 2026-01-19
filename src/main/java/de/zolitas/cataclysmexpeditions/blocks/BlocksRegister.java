@@ -1,7 +1,6 @@
 package de.zolitas.cataclysmexpeditions.blocks;
 
 import de.zolitas.cataclysmexpeditions.CataclysmExpeditions;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -13,4 +12,6 @@ public class BlocksRegister {
   public static final DeferredBlock<ExpeditionAnchorBlock> HUB_ANCHOR_BLOCK = BLOCKS.register("hub_anchor", HubAnchorBlock::new);
 
   public static final DeferredBlock<ExpeditionPortalBlock> EXPEDITION_PORTAL_BLOCK = BLOCKS.register("expedition_portal", ExpeditionPortalBlock::new);
+
+  public static final DeferredBlock<VoidDeathBlock> VOID_DEATH_BLOCK = BLOCKS.register("void_death_block", VoidDeathBlock::new);
 }

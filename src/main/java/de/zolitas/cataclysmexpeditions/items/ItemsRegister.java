@@ -20,6 +20,8 @@ public class ItemsRegister {
 
   public static final DeferredItem<BlockItem> EXPEDITION_PORTAL_ITEM = ITEMS.registerSimpleBlockItem(BlocksRegister.EXPEDITION_PORTAL_BLOCK);
 
+  public static final DeferredItem<BlockItem> VOID_DEATH_ITEM = ITEMS.registerSimpleBlockItem(BlocksRegister.VOID_DEATH_BLOCK);
+
   @SubscribeEvent
   public static void addItemsToCreativeTabs(BuildCreativeModeTabContentsEvent event) {
     if (event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {

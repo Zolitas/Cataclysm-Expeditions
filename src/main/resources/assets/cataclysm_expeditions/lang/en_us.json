@@ -3,6 +3,7 @@
   "block.cataclysm_expeditions.return_anchor": "Return Anchor",
   "block.cataclysm_expeditions.hub_anchor": "Hub Anchor",
   "block.cataclysm_expeditions.expedition_portal": "Expedition Portal",
+  "block.cataclysm_expeditions.void_death_block": "Void Death Block",
   "gui.cataclysm_expeditions.expedition_loading": "Expedition loading…",
   "gui.cataclysm_expeditions.expedition_anchor.confirm.title": "Do you want to leave the Expedition?",
   "gui.cataclysm_expeditions.expedition_anchor.confirm.message": "You will be teleported back to the Hub and you won't be able to return to this structure.",
