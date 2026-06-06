@@ -126,10 +126,10 @@ public class ExpeditionLobby {
 
     player.teleportTo(
         callbackData.getLevel(),
-        callbackData.getStartPos().getX() + expedition.getTeleportationOffset().getX(),
-        callbackData.getStartPos().getY() + expedition.getTeleportationOffset().getY(),
-        callbackData.getStartPos().getZ() + expedition.getTeleportationOffset().getZ(),
-        expedition.getTeleportationOffset().getYaw(),
+        callbackData.getStartPos().getX() + expedition.getTeleportationOffset().x(),
+        callbackData.getStartPos().getY() + expedition.getTeleportationOffset().y(),
+        callbackData.getStartPos().getZ() + expedition.getTeleportationOffset().z(),
+        expedition.getTeleportationOffset().yaw(),
         0
     );
   }

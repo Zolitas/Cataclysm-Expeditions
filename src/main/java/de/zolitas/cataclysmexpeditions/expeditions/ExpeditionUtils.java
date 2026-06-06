@@ -19,6 +19,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -68,6 +69,7 @@ public class ExpeditionUtils {
           BlockPos startPos = new BlockPos(placementChunkPos.getMinBlockX(), 0, placementChunkPos.getMinBlockZ());
           
           placeExpeditionStructureBoundary(expeditionLevel, expedition.getStructureBoundaryOffsets(), startPos);
+          placeExpeditionAnchors(expeditionLevel, expedition.getAnchorOffsets(), startPos);
 
           ExpeditionCallbackData expeditionCallbackData = ExpeditionCallbackData.builder()
               .players(targets)
@@ -111,6 +113,14 @@ public class ExpeditionUtils {
     }
 
     return ExpeditionWorldUtils.placeStructure(expeditionLevel, chunkGenerator, structureStart, progressHandler);
+  }
+
+  private static void placeExpeditionAnchors(ServerLevel level, List<BlockPos> anchorOffsets, BlockPos startPos)
+  {
+    for (BlockPos anchorOffset : anchorOffsets) {
+      BlockPos offsetAnchorPos = startPos.offset(anchorOffset.getX(), anchorOffset.getY(), anchorOffset.getZ());
+      level.setBlock(offsetAnchorPos, BlocksRegister.EXPEDITION_ANCHOR_BLOCK.get().defaultBlockState(), 3);
+    }
   }
 
   private static void placeExpeditionStructureBoundary(ServerLevel level, BlockPosPair boundaryOffsets, BlockPos startPos) {

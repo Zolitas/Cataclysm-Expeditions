@@ -16,7 +16,7 @@ import org.slf4j.Logger;
 @Mod(CataclysmExpeditions.MODID)
 public class CataclysmExpeditions {
   public static final String MODID = "cataclysm_expeditions";
-  private static final Logger LOGGER = LogUtils.getLogger();
+  public static final Logger LOGGER = LogUtils.getLogger();
 
   public CataclysmExpeditions(IEventBus modEventBus, ModContainer modContainer) {
     LOGGER.info("Cataclysm Expeditions initialized!");

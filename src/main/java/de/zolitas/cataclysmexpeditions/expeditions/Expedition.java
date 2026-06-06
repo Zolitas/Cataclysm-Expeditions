@@ -1,6 +1,6 @@
 package de.zolitas.cataclysmexpeditions.expeditions;
 
-import de.zolitas.cataclysmexpeditions.blocks.BlocksRegister;
+import de.zolitas.cataclysmexpeditions.config.CataclysmExpeditionsConfig;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.minecraft.ChatFormatting;
@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
 
 @AllArgsConstructor
@@ -26,11 +27,10 @@ public enum Expedition implements StringRepresentable {
       new DetailedPosition(27.5f, 37f, -38.5f, 0),
       new DetailedPosition(-1581.5f, 2f, -1582.5f, 90),
       new BlockPosPair(new BlockPos(-48, -64, -92), new BlockPos(108, 300, 91)),
+      List.of(new BlockPos(27, 37, -35)),
       Component.literal("Netherite\nMonstrosity").withStyle(getDisplayStyle()),
       null,
-      data -> {
-        placeExpeditionAnchor(data, 27, 37, -35);
-      }
+      data -> {}
   ),
   ENDER_GUARDIAN(
       "ender_guardian",
@@ -39,11 +39,10 @@ public enum Expedition implements StringRepresentable {
       new DetailedPosition(-22.5f, 56f, 11.5f, 270),
       new DetailedPosition(-1597.5f, 2f, -1582.5f, -90),
       new BlockPosPair(new BlockPos(-88, -64, -90), new BlockPos(126, 300, 123)),
+      List.of(new BlockPos(-4, 54, 14)),
       Component.literal("Ender\nGuardian").withStyle(getDisplayStyle()),
       null,
-      data -> {
-        placeExpeditionAnchor(data, -4, 54, 14);
-      }
+      data -> {}
   ),
   THE_HARBINGER(
       "the_harbinger",
@@ -52,11 +51,10 @@ public enum Expedition implements StringRepresentable {
       new DetailedPosition(58.5f, -25f, 2.5f, 0),
       new DetailedPosition(-1581.5f, 2f, -1574.5f, 90),
       new BlockPosPair(new BlockPos(-84, -64, -55), new BlockPos(120, 300, 116)),
+      List.of(new BlockPos(58, -25, 13)),
       Component.literal("The Harbinger").withStyle(getDisplayStyle()),
       Component.translatable("display.cataclysm_expeditions.note.the_harbinger").withStyle(getNoteStyle()),
-      data -> {
-        placeExpeditionAnchor(data, 58, -25, 13);
-      }
+      data -> {}
   ),
   ANCIENT_REMNANT(
       "ancient_remnant",
@@ -65,11 +63,10 @@ public enum Expedition implements StringRepresentable {
       new DetailedPosition(51.5f, 7f, 111.5f, 180),
       new DetailedPosition(-1597.5f, 2f, -1574.5f, -90),
       new BlockPosPair(new BlockPos(-45, -64, -46), new BlockPos(153, 300, 167)),
+      List.of(new BlockPos(53, 7, 105)),
       Component.literal("Ancient\nRemnant").withStyle(getDisplayStyle()),
       Component.translatable("display.cataclysm_expeditions.note.ancient_remnant").withStyle(getNoteStyle()),
-      data -> {
-        placeExpeditionAnchor(data, 53, 7, 105);
-      }
+      data -> {}
   ),
   THE_LEVIATHAN(
       "the_leviathan",
@@ -78,11 +75,10 @@ public enum Expedition implements StringRepresentable {
       new DetailedPosition(-100.5f, 26f, 23.5f, 270),
       new DetailedPosition(-1581.5f, 2f, -1566.5f, 90),
       new BlockPosPair(new BlockPos(-170, -64, -130), new BlockPos(180, 300, 152)),
+      List.of(new BlockPos(-87, 26, 26)),
       Component.literal("The Leviathan").withStyle(getDisplayStyle()),
       Component.translatable("display.cataclysm_expeditions.note.the_leviathan").withStyle(getNoteStyle()),
-      data -> {
-        placeExpeditionAnchor(data, -87, 26, 26);
-      }
+      data -> {}
   ),
   SCYLLA(
       "scylla",
@@ -91,13 +87,10 @@ public enum Expedition implements StringRepresentable {
       new DetailedPosition(0.5f, 66f, 42.5f, 0),
       new DetailedPosition(-1597.5f, 2f, -1566.5f, -90),
       new BlockPosPair(new BlockPos(-152, -64, -88), new BlockPos(170, 300, 150)),
+      List.of(new BlockPos(5, 92, 47), new BlockPos(99, 185, 24), new BlockPos(0, 242, 74)),
       Component.literal("Scylla").withStyle(getDisplayStyle()),
       null,
-      data -> {
-        placeExpeditionAnchor(data, 5, 92, 47);
-        placeExpeditionAnchor(data, 99, 185, 24);
-        placeExpeditionAnchor(data, 0, 242, 74);
-      }
+      data -> {}
   ),
   MALEDICTUS(
       "maledictus",
@@ -106,12 +99,10 @@ public enum Expedition implements StringRepresentable {
       new DetailedPosition(10.5f, 13f, 80.5f, 180),
       new DetailedPosition(-1581.5f, 2f, -1558.5f, 90),
       new BlockPosPair(new BlockPos(-103, -64, -105), new BlockPos(184, 300, 159)),
+      List.of(new BlockPos(13, 17, 72), new BlockPos(27, 17, -12)),
       Component.literal("Maledictus").withStyle(getDisplayStyle()),
       null,
-      data -> {
-        placeExpeditionAnchor(data, 13, 17, 72);
-        placeExpeditionAnchor(data, 27, 17, -12);
-      }
+      data -> {}
   ),
   IGNIS(
       "ignis",
@@ -120,11 +111,10 @@ public enum Expedition implements StringRepresentable {
       new DetailedPosition(42.5f, 32f, 8.5f, 0),
       new DetailedPosition(-1597.5f, 2f, -1558.5f, -90),
       new BlockPosPair(new BlockPos(-53, -64, -54), new BlockPos(140, 300, 140)),
+      List.of(new BlockPos(42, 32, 25)),
       Component.literal("Ignis").withStyle(getDisplayStyle()),
       null,
       data -> {
-        placeExpeditionAnchor(data, 42, 32, 25);
-
         // removing the netherrack ceiling that gets shipped with the structure
         for (int xOffset = 11; xOffset <= 73; xOffset++) {
           for (int zOffset = 12; zOffset <= 70; zOffset++) {
@@ -142,9 +132,17 @@ public enum Expedition implements StringRepresentable {
     return Style.EMPTY.withColor(ChatFormatting.RED);
   }
 
-  private static void placeExpeditionAnchor(ExpeditionCallbackData data, int offsetX, int offsetY, int offsetZ) {
-    BlockPos anchorPos = data.startPos.offset(offsetX, offsetY, offsetZ);
-    data.level.setBlock(anchorPos, BlocksRegister.EXPEDITION_ANCHOR_BLOCK.get().defaultBlockState(), 3);
+  public DetailedPosition getTeleportationOffset() {
+    return DetailedPosition.fromString(CataclysmExpeditionsConfig.CONFIG.expeditionPositions.get(this).teleportOffset().get());
+  }
+
+  public List<BlockPos> getAnchorOffsets() {
+    return CataclysmExpeditionsConfig.CONFIG.expeditionPositions.get(this).anchorOffsets().get()
+        .stream().map(BlockPosUtils::fromString).toList();
+  }
+
+  public BlockPosPair getStructureBoundaryOffsets() {
+    return BlockPosPair.fromString(CataclysmExpeditionsConfig.CONFIG.expeditionPositions.get(this).structureBoundaryOffsets().get());
   }
 
   @Getter
@@ -157,13 +155,16 @@ public enum Expedition implements StringRepresentable {
   private final boolean isNether;
 
   @Getter
-  private final DetailedPosition teleportationOffset;
+  private final DetailedPosition defaultTeleportationOffset;
 
   @Getter
   private final DetailedPosition uiPosition;
 
   @Getter
-  private final BlockPosPair structureBoundaryOffsets;
+  private final BlockPosPair defaultStructureBoundaryOffsets;
+
+  @Getter
+  private final List<BlockPos> defaultAnchorOffsets;
 
   @Getter
   private final Component displayComponent;

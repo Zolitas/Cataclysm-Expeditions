@@ -160,15 +160,15 @@ public class ExpeditionWorldUtils {
     for (Expedition expedition : Expedition.values()) {
       Display.TextDisplay lobbyTextDisplay = new Display.TextDisplay(EntityType.TEXT_DISPLAY, level);
       DetailedPosition uiPosition = expedition.getUiPosition();
-      lobbyTextDisplay.setPos(uiPosition.getX(), uiPosition.getY(), uiPosition.getZ());
-      lobbyTextDisplay.setYRot(uiPosition.getYaw());
+      lobbyTextDisplay.setPos(uiPosition.x(), uiPosition.y(), uiPosition.z());
+      lobbyTextDisplay.setYRot(uiPosition.yaw());
       level.addFreshEntity(lobbyTextDisplay);
 
       getExpeditionWorldSavedData(level).setLobbyDisplay(expedition, lobbyTextDisplay.getStringUUID());
 
       Display.TextDisplay expeditionTextDisplay = new Display.TextDisplay(EntityType.TEXT_DISPLAY, level);
-      expeditionTextDisplay.setPos(uiPosition.getX(), uiPosition.getY() + 1.4, uiPosition.getZ());
-      expeditionTextDisplay.setYRot(uiPosition.getYaw());
+      expeditionTextDisplay.setPos(uiPosition.x(), uiPosition.y() + 1.4, uiPosition.z());
+      expeditionTextDisplay.setYRot(uiPosition.yaw());
       expeditionTextDisplay.setText(expedition.getDisplayComponent());
 
       expeditionTextDisplay.setTransformation(
@@ -182,8 +182,8 @@ public class ExpeditionWorldUtils {
 
       if (expedition.getNoteComponent() != null) {
         Display.TextDisplay noteTextDisplay = new Display.TextDisplay(EntityType.TEXT_DISPLAY, level);
-        noteTextDisplay.setPos(uiPosition.getX() + (uiPosition.getYaw() < 0 ? .5 : -.5), uiPosition.getY() + 2.6, uiPosition.getZ());
-        noteTextDisplay.setYRot(uiPosition.getYaw());
+        noteTextDisplay.setPos(uiPosition.x() + (uiPosition.yaw() < 0 ? .5 : -.5), uiPosition.y() + 2.6, uiPosition.z());
+        noteTextDisplay.setYRot(uiPosition.yaw());
         noteTextDisplay.setText(expedition.getNoteComponent());
         noteTextDisplay.setLineWidth(200);
 
