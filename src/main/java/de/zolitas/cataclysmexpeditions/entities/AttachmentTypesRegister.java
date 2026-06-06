@@ -16,7 +16,7 @@ public class AttachmentTypesRegister {
 
   public static final Supplier<AttachmentType<Integer>> EXPEDITION_PORTAL_COOLDOWN = ATTACHMENT_TYPES.register(
       "expedition_portal_cooldown",
-      () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).build()
+      () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).copyOnDeath().build()
   );
 
   public static final Map<Expedition, Supplier<AttachmentType<Integer>>> EXPEDITION_COOLDOWNS = new EnumMap<>(Expedition.class);
@@ -25,7 +25,7 @@ public class AttachmentTypesRegister {
     for (Expedition expedition : Expedition.values()) {
       var registeredAttachmentType = ATTACHMENT_TYPES.register(
           expedition.name().toLowerCase() + "_cooldown",
-          () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).build()
+          () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).copyOnDeath().build()
       );
 
       EXPEDITION_COOLDOWNS.put(expedition, registeredAttachmentType);
