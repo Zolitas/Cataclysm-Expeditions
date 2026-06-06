@@ -7,10 +7,13 @@ import de.zolitas.cataclysmexpeditions.config.ConditionRegister;
 import de.zolitas.cataclysmexpeditions.entities.AttachmentTypesRegister;
 import de.zolitas.cataclysmexpeditions.items.ItemsRegister;
 import de.zolitas.cataclysmexpeditions.network.NetworkRegister;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.client.gui.ConfigurationScreen;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.slf4j.Logger;
 
 @Mod(CataclysmExpeditions.MODID)
@@ -29,5 +32,12 @@ public class CataclysmExpeditions {
     ConditionRegister.CONDITION_CODECS.register(modEventBus);
 
     modEventBus.addListener(NetworkRegister::register);
+  }
+
+  @Mod(value = CataclysmExpeditions.MODID, dist = Dist.CLIENT)
+  public static class CataclysmExpeditionsClient {
+    public CataclysmExpeditionsClient(ModContainer modContainer) {
+      modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+    }
   }
 }

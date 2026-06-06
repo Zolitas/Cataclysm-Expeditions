@@ -15,5 +15,24 @@
   "error.cataclysm_expeditions.expedition_cooldown": "You are on cooldown for this Expedition: ",
   "display.cataclysm_expeditions.note.the_harbinger": "Requires a Nether Star to summon",
   "display.cataclysm_expeditions.note.ancient_remnant": "Requires a Brush to summon",
-  "display.cataclysm_expeditions.note.the_leviathan": "Requires a Heart of the Sea to summon"
+  "display.cataclysm_expeditions.note.the_leviathan": "Requires a Heart of the Sea to summon",
+
+  "cataclysm_expeditions.configuration.maxExpeditionPlayerCount": "Max. Expedition Player Count",
+  "cataclysm_expeditions.configuration.expeditionLobbyTtl": "Expedition Lobby TTL",
+  "cataclysm_expeditions.configuration.expeditionCooldown": "Expedition Cooldown",
+  "cataclysm_expeditions.configuration.distanceBetweenExpeditionStructures": "Distance Between Expedition Structures",
+  "cataclysm_expeditions.configuration.hubAnchorRecipeEnabled": "Hub Anchor Recipe Enabled",
+  "cataclysm_expeditions.configuration.structureGenerationBatchSize": "Structure Generation Batch Size",
+  "cataclysm_expeditions.configuration.expeditionPositions": "Expedition Positions",
+  "cataclysm_expeditions.configuration.netherite_monstrosity": "Netherite Monstrosity",
+  "cataclysm_expeditions.configuration.ender_guardian": "Ender Guardian",
+  "cataclysm_expeditions.configuration.the_harbinger": "The Harbinger",
+  "cataclysm_expeditions.configuration.ancient_remnant": "Ancient Remnant",
+  "cataclysm_expeditions.configuration.the_leviathan": "The Leviathan",
+  "cataclysm_expeditions.configuration.scylla": "Scylla",
+  "cataclysm_expeditions.configuration.maledictus": "Maledictus",
+  "cataclysm_expeditions.configuration.ignis": "Ignis",
+  "cataclysm_expeditions.configuration.teleportOffset": "Teleport Offset",
+  "cataclysm_expeditions.configuration.anchorOffsets": "Anchor Offsets",
+  "cataclysm_expeditions.configuration.structureBoundaryOffsets": "Structure Boundary Offsets"
 }
