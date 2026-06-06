@@ -5,6 +5,7 @@ import de.zolitas.cataclysmexpeditions.CataclysmExpeditions;
 import de.zolitas.cataclysmexpeditions.config.CataclysmExpeditionsConfig;
 import de.zolitas.cataclysmexpeditions.expeditions.DetailedPosition;
 import de.zolitas.cataclysmexpeditions.expeditions.Expedition;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.SectionPos;
@@ -19,10 +20,16 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelHeightAccessor;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -31,12 +38,10 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import java.util.Objects;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 
 @EventBusSubscriber(modid = CataclysmExpeditions.MODID)
 public class ExpeditionWorldUtils {
@@ -102,7 +107,8 @@ public class ExpeditionWorldUtils {
     Structure hubStructure = structureRegistry.get(HUB_STRUCTURE_LOCATION);
 
     assert hubStructure != null;
-    StructureStart structureStart = hubStructure.generate(
+    StructureStart structureStart = generateHubStructureStart(
+        hubStructure,
         registryAccess,
         chunkGenerator,
         chunkGenerator.getBiomeSource(),
@@ -123,6 +129,31 @@ public class ExpeditionWorldUtils {
 
           createLobbyDisplays(level);
         });
+  }
+
+  /**
+   * This is an almost exact copy of
+   * {@link Structure#generate(RegistryAccess, ChunkGenerator, BiomeSource, RandomState,
+   * StructureTemplateManager, long, ChunkPos, int, LevelHeightAccessor, Predicate)}
+   * but a {@link HubWorldgenRandom} is used instead of a regular one.
+   */
+  private static StructureStart generateHubStructureStart(Structure structure, RegistryAccess registryAccess,
+                                                          ChunkGenerator chunkGenerator, BiomeSource biomeSource,
+                                                          RandomState randomState, StructureTemplateManager structureTemplateManager,
+                                                          long seed, ChunkPos chunkPos, int references, LevelHeightAccessor heightAccessor,
+                                                          Predicate<Holder<Biome>> validBiome) {
+    Structure.GenerationContext generationContext = new Structure.GenerationContext(registryAccess, chunkGenerator,
+        biomeSource, randomState, structureTemplateManager, new HubWorldgenRandom(), seed, chunkPos, heightAccessor, validBiome);
+    Optional<Structure.GenerationStub> generationStub = structure.findValidGenerationPoint(generationContext);
+    if (generationStub.isPresent()) {
+      StructurePiecesBuilder piecesBuilder = generationStub.get().getPiecesBuilder();
+      StructureStart structureStart = new StructureStart(structure, chunkPos, references, piecesBuilder.build());
+      if (structureStart.isValid()) {
+        return structureStart;
+      }
+    }
+
+    return StructureStart.INVALID_START;
   }
 
   public static void createLobbyDisplays(ServerLevel level) {
