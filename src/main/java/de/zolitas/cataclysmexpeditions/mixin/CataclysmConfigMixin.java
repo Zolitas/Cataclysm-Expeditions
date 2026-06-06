@@ -1,7 +1,7 @@
 package de.zolitas.cataclysmexpeditions.mixin;
 
-import com.github.L_Ender.cataclysm.config.CMConfig;
-import net.neoforged.fml.config.ModConfig;
+import com.github.L_Ender.cataclysm.config.CMCommonConfig;
+import com.github.L_Ender.cataclysm.config.CommonConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -11,16 +11,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * Mixin for CMConfig to modify config values on bake.
  * This ensures that respawning a boss is not possible.
  */
-@Mixin(CMConfig.class)
+@Mixin(CMCommonConfig.class)
 public class CataclysmConfigMixin {
-  @Inject(method = "bake", at = @At("TAIL"))
-  private static void onBake(ModConfig config, CallbackInfo ci) {
-    CMConfig.RemnantRespawner = false;
-    CMConfig.EnderGuardianRespawner = false;
-    CMConfig.HarbingerRespawner = false;
-    CMConfig.ScyllaRespawner = false;
-    CMConfig.MonstrosityRespawner = false;
+  @Inject(method = "Commonbake", at = @At("TAIL"))
+  private static void onBake(CommonConfig config, CallbackInfo ci) {
+    CMCommonConfig.AncientRemnant.respawner = false;
+    CMCommonConfig.EnderGuardian.respawner = false;
+    CMCommonConfig.Harbinger.respawner = false;
+    CMCommonConfig.Scylla.respawner = false;
+    CMCommonConfig.NetheriteMonstrosity.respawner = false;
 
-    CMConfig.Cursed_tombstone_summon_cooldown = 1;
+    CMCommonConfig.Blocks.CursedTombstoneCooldown = 1;
   }
 }
