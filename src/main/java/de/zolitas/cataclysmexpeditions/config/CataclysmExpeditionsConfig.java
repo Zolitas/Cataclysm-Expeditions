@@ -16,7 +16,7 @@ public class CataclysmExpeditionsConfig {
   public static final ModConfigSpec CONFIG_SPEC;
 
   public final ModConfigSpec.ConfigValue<Integer> maxExpeditionPlayerCount;
-  public final ModConfigSpec.ConfigValue<Integer> expeditionLobbyTtl;
+  public final ModConfigSpec.ConfigValue<Integer> expeditionLobbyDuration;
   public final ModConfigSpec.ConfigValue<Integer> expeditionCooldown;
   public final ModConfigSpec.ConfigValue<Integer> distanceBetweenExpeditionStructures;
   public final ModConfigSpec.ConfigValue<Boolean> hubAnchorRecipeEnabled;
@@ -34,9 +34,9 @@ public class CataclysmExpeditionsConfig {
         .comment("Maximum number of players allowed in an expedition. The UI might not look good with more than 4 players")
         .defineInRange("maxExpeditionPlayerCount", 4, 1, 100);
 
-    expeditionLobbyTtl = builder
-        .comment("Number of ticks that an expedition should be open for others to join. Is displayed as seconds ingame")
-        .defineInRange("expeditionLobbyTtl", 20 * 30, 1, Integer.MAX_VALUE);
+    expeditionLobbyDuration = builder
+        .comment("Number of seconds that an expedition lobby should be open for others to join.")
+        .defineInRange("expeditionLobbyDuration", 30, 1, Integer.MAX_VALUE);
 
     expeditionCooldown = builder
         .comment("Number of ticks that a player has to access the same one again. Is displayed as hours, minutes and seconds ingame")

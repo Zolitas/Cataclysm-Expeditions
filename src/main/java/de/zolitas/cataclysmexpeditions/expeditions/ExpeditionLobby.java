@@ -24,7 +24,7 @@ public class ExpeditionLobby {
   @Setter
   private ExpeditionCallbackData callbackData = null;
   @Getter
-  private int ttl = CataclysmExpeditionsConfig.CONFIG.expeditionLobbyTtl.get();
+  private int ttl = CataclysmExpeditionsConfig.CONFIG.expeditionLobbyDuration.get() * 20;
   @Getter
   private boolean finishedGenerating = false;
 
