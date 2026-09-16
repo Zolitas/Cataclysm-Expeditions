@@ -19,7 +19,7 @@
   "display.cataclysm_expeditions.note.the_leviathan": "Requires a Heart of the Sea to summon",
 
   "cataclysm_expeditions.configuration.maxExpeditionPlayerCount": "Max. Expedition Player Count",
-  "cataclysm_expeditions.configuration.expeditionLobbyTtl": "Expedition Lobby TTL",
+  "cataclysm_expeditions.configuration.expeditionLobbyDuration": "Expedition Lobby Duration",
   "cataclysm_expeditions.configuration.expeditionCooldown": "Expedition Cooldown",
   "cataclysm_expeditions.configuration.resetExpeditionCooldownWhenLeavingDuringLobby": "Reset Expedition Cooldown when leaving during lobby",
   "cataclysm_expeditions.configuration.distanceBetweenExpeditionStructures": "Distance Between Expedition Structures",
