@@ -2,6 +2,7 @@ package de.zolitas.cataclysmexpeditions.network;
 
 import de.zolitas.cataclysmexpeditions.CataclysmExpeditions;
 import de.zolitas.cataclysmexpeditions.blocks.ExpeditionAnchorBlock;
+import de.zolitas.cataclysmexpeditions.expeditions.ExpeditionLobbyUtils;
 import de.zolitas.cataclysmexpeditions.network.payload.ConfirmAnchorPayload;
 import de.zolitas.cataclysmexpeditions.world.ExpeditionWorldUtils;
 import net.minecraft.ChatFormatting;
@@ -48,6 +49,7 @@ public class NetworkRegister {
             }
 
             ExpeditionWorldUtils.teleportToHub(player);
+            ExpeditionLobbyUtils.getLobbies().forEach(lobby -> lobby.removePlayer(player));
           });
         }
     );

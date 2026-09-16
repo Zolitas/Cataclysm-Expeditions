@@ -93,6 +93,25 @@ public class ExpeditionLobby {
     }
   }
 
+  public void removePlayer(ServerPlayer player) {
+    if (duration <= 0) return;
+    if (!players.contains(player)) return;
+
+    players.remove(player);
+    bossBar.removePlayer(player);
+
+    if (CataclysmExpeditionsConfig.CONFIG.resetExpeditionCooldownWhenLeavingDuringLobby.get()) {
+      player.setData(
+          AttachmentTypesRegister.LAST_EXPEDITION_USES.get(expedition),
+          Instant.MIN
+      );
+    }
+
+    if (lobbyTextDisplay != null) {
+      updateLobbyTextDisplay();
+    }
+  }
+
   private void updateLobbyTextDisplay() {
     if (lobbyTextDisplay == null) return;
 

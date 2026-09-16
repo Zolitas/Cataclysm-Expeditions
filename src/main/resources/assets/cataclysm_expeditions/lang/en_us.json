@@ -21,6 +21,7 @@
   "cataclysm_expeditions.configuration.maxExpeditionPlayerCount": "Max. Expedition Player Count",
   "cataclysm_expeditions.configuration.expeditionLobbyTtl": "Expedition Lobby TTL",
   "cataclysm_expeditions.configuration.expeditionCooldown": "Expedition Cooldown",
+  "cataclysm_expeditions.configuration.resetExpeditionCooldownWhenLeavingDuringLobby": "Reset Expedition Cooldown when leaving during lobby",
   "cataclysm_expeditions.configuration.distanceBetweenExpeditionStructures": "Distance Between Expedition Structures",
   "cataclysm_expeditions.configuration.hubAnchorRecipeEnabled": "Hub Anchor Recipe Enabled",
   "cataclysm_expeditions.configuration.structureGenerationBatchSize": "Structure Generation Batch Size",

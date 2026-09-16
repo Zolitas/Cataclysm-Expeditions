@@ -18,6 +18,7 @@ public class CataclysmExpeditionsConfig {
   public final ModConfigSpec.ConfigValue<Integer> maxExpeditionPlayerCount;
   public final ModConfigSpec.ConfigValue<Integer> expeditionLobbyDuration;
   public final ModConfigSpec.ConfigValue<Integer> expeditionCooldown;
+  public final ModConfigSpec.BooleanValue resetExpeditionCooldownWhenLeavingDuringLobby;
   public final ModConfigSpec.ConfigValue<Integer> distanceBetweenExpeditionStructures;
   public final ModConfigSpec.ConfigValue<Boolean> hubAnchorRecipeEnabled;
   public final ModConfigSpec.ConfigValue<Integer> structureGenerationBatchSize;
@@ -46,6 +47,13 @@ public class CataclysmExpeditionsConfig {
             Is displayed as hours, minutes and seconds ingame.
             """)
         .defineInRange("expeditionCooldown", 60 * 60, 0, Integer.MAX_VALUE);
+
+    resetExpeditionCooldownWhenLeavingDuringLobby = builder
+        .comment("""
+            Whether the expedition cooldown should be reset when players leave the expedition while the lobby is still open.
+            This should probably be turned off when the lobby duration is high.
+            """)
+        .define("resetExpeditionCooldownWhenLeavingDuringLobby", true);
 
     distanceBetweenExpeditionStructures = builder
         .comment("Distance between the expedition structures in chunks.")
