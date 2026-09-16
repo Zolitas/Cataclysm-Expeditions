@@ -18,14 +18,13 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class ExpeditionUtils {
-  public static void startExpedition(Expedition expedition, Collection<ServerPlayer> targets,
+  public static void startExpedition(Expedition expedition, ServerPlayer player,
                                      MinecraftServer server, RegistryAccess registryAccess, Consumer<ExpeditionException> exceptionHandler)
   {
     ServerLevel expeditionLevel = ExpeditionWorldUtils.getExpeditionLevel(server, expedition.isNether());
@@ -44,7 +43,7 @@ public class ExpeditionUtils {
     }
 
     ExpeditionLobby lobby = ExpeditionLobbyUtils.createLobby(expedition, server);
-    targets.forEach(lobby::addPlayer);
+    lobby.addPlayer(player, false);
 
     int expeditionCounter = ExpeditionWorldUtils.getExpeditionWorldSavedData(server, expedition.isNether()).getExpeditionCounter();
     ExpeditionWorldUtils.getExpeditionWorldSavedData(server, expedition.isNether()).incrementExpeditionCounter();
@@ -72,7 +71,6 @@ public class ExpeditionUtils {
           placeExpeditionAnchors(expeditionLevel, expedition.getAnchorOffsets(), startPos);
 
           ExpeditionCallbackData expeditionCallbackData = ExpeditionCallbackData.builder()
-              .players(targets)
               .level(expeditionLevel)
               .startPos(startPos)
               .build();

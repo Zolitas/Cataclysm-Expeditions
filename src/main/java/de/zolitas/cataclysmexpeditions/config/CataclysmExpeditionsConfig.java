@@ -31,27 +31,32 @@ public class CataclysmExpeditionsConfig {
 
   private CataclysmExpeditionsConfig(ModConfigSpec.Builder builder) {
     maxExpeditionPlayerCount = builder
-        .comment("Maximum number of players allowed in an expedition. The UI might not look good with more than 4 players")
+        .comment("Maximum number of players allowed in an expedition. The UI might not look good with more than 4 players.")
         .defineInRange("maxExpeditionPlayerCount", 4, 1, 100);
 
     expeditionLobbyDuration = builder
-        .comment("Number of seconds that an expedition lobby should be open for others to join.")
-        .defineInRange("expeditionLobbyDuration", 30, 1, Integer.MAX_VALUE);
+        .comment("Number of seconds that an expedition lobby should be open for others to join. When set to 0, no other players can join.")
+        .defineInRange("expeditionLobbyDuration", 30, 0, Integer.MAX_VALUE);
 
     expeditionCooldown = builder
-        .comment("Number of ticks that a player has to access the same one again. Is displayed as hours, minutes and seconds ingame")
-        .defineInRange("expeditionCooldown", 20 * 60 * 60 * 24, 1, Integer.MAX_VALUE);
+        .comment("""
+            Number of seconds that a player has to wait to access the same expedition again.
+            The cooldown will still decrease when the player is offline or the server is stopped.
+            When set to 0, no cooldown is applied.
+            Is displayed as hours, minutes and seconds ingame.
+            """)
+        .defineInRange("expeditionCooldown", 60 * 60, 0, Integer.MAX_VALUE);
 
     distanceBetweenExpeditionStructures = builder
-        .comment("Distance between the expedition structures in chunks")
+        .comment("Distance between the expedition structures in chunks.")
         .defineInRange("distanceBetweenExpeditionStructures", 100, 10, Integer.MAX_VALUE);
 
     hubAnchorRecipeEnabled = builder
-        .comment("Enables the recipe for the hub anchor that is needed to enter the hub. If you disable this setting, you will have to implement another way to get to the hub yourself")
+        .comment("Enables the recipe for the hub anchor that is needed to enter the hub. If you disable this setting, you will have to implement another way to get to the hub yourself.")
         .define("hubAnchorRecipeEnabled", true);
 
     structureGenerationBatchSize = builder
-        .comment("Number of chunks of a structure that are generated in one batch. Higher values lead to longer loading times but also lower lag spikes")
+        .comment("Number of chunks of a structure that are generated in one batch. Higher values lead to longer loading times but also lower lag spikes.")
         .defineInRange("structureGenerationBatchSize", 2, 1, 5);
 
     defineExpeditionPositionConfig(builder);
@@ -81,7 +86,7 @@ public class CataclysmExpeditionsConfig {
 
       ModConfigSpec.ConfigValue<List<? extends String>> anchorOffsets = builder
           .comment(String.format("""
-              Defines the positions of the anchors for the "%s" expedition
+              Defines the positions of the anchors for the "%s" expedition.
               Each position is three integers (x y z) separated by spaces.
               """, expedition.getId()))
           .defineList(
@@ -103,7 +108,7 @@ public class CataclysmExpeditionsConfig {
 
       ModConfigSpec.ConfigValue<String> structureBoundaryOffsets = builder
           .comment(String.format("""
-              Defines the bounding box of the "%s" expedition via two opposite corners
+              Defines the bounding box of the "%s" expedition via two opposite corners.
               Each corner is three integers (x y z) separated by spaces; the two corners are separated by a colon.
               """, expedition.getId()))
           .define(String.format("expeditionPositions.%s.structureBoundaryOffsets", expedition.getId()), expedition.getDefaultStructureBoundaryOffsets().toString(), object -> {

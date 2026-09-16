@@ -14,6 +14,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.entity.Display;
 
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,7 +25,7 @@ public class ExpeditionLobby {
   @Setter
   private ExpeditionCallbackData callbackData = null;
   @Getter
-  private int ttl = CataclysmExpeditionsConfig.CONFIG.expeditionLobbyDuration.get() * 20;
+  private int duration = CataclysmExpeditionsConfig.CONFIG.expeditionLobbyDuration.get() * 20;
   @Getter
   private boolean finishedGenerating = false;
 
@@ -62,32 +63,27 @@ public class ExpeditionLobby {
     bossBar.setProgress(progress);
   }
 
-  public void decreaseTTL() {
-    ttl--;
-    if (ttl % 20 == 0) updateLobbyTextDisplay();
+  public void decreaseDuration() {
+    duration--;
+    if (duration % 20 == 0) updateLobbyTextDisplay();
   }
 
   public boolean containsPlayer(ServerPlayer player) {
     return players.contains(player);
   }
 
-  public void addPlayer(ServerPlayer player) {
-    addPlayer(player, false);
-  }
-
   public void addPlayer(ServerPlayer player, boolean teleportInstantly) {
-    if (ttl <= 0) return;
+    if (duration <= 0) return;
     if (players.size() >= CataclysmExpeditionsConfig.CONFIG.maxExpeditionPlayerCount.get()) return;
     if (players.contains(player)) return;
-    if (player.getData(AttachmentTypesRegister.EXPEDITION_COOLDOWNS.get(expedition)) > 0) return;
 
     bossBar.addPlayer(player);
 
     players.add(player);
 
     player.setData(
-        AttachmentTypesRegister.EXPEDITION_COOLDOWNS.get(expedition),
-        CataclysmExpeditionsConfig.CONFIG.expeditionCooldown.get()
+        AttachmentTypesRegister.LAST_EXPEDITION_USES.get(expedition),
+        Instant.now()
     );
 
     if (teleportInstantly) teleportPlayer(player);
@@ -112,7 +108,7 @@ public class ExpeditionLobby {
       component.append("\n - ");
     }
 
-    component.append(Component.literal("\n\u231B " + ttl / 20 + "s").withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xaa5bf0))));
+    component.append(Component.literal("\n\u231B " + duration / 20 + "s").withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xaa5bf0))));
 
     lobbyTextDisplay.setText(component);
   }

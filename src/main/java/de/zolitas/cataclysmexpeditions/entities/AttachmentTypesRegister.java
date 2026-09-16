@@ -3,10 +3,12 @@ package de.zolitas.cataclysmexpeditions.entities;
 import com.mojang.serialization.Codec;
 import de.zolitas.cataclysmexpeditions.CataclysmExpeditions;
 import de.zolitas.cataclysmexpeditions.expeditions.Expedition;
+import net.minecraft.util.ExtraCodecs;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
+import java.time.Instant;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -19,16 +21,16 @@ public class AttachmentTypesRegister {
       () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).copyOnDeath().build()
   );
 
-  public static final Map<Expedition, Supplier<AttachmentType<Integer>>> EXPEDITION_COOLDOWNS = new EnumMap<>(Expedition.class);
+  public static final Map<Expedition, Supplier<AttachmentType<Instant>>> LAST_EXPEDITION_USES = new EnumMap<>(Expedition.class);
 
   static {
     for (Expedition expedition : Expedition.values()) {
       var registeredAttachmentType = ATTACHMENT_TYPES.register(
-          expedition.name().toLowerCase() + "_cooldown",
-          () -> AttachmentType.builder(() -> 0).serialize(Codec.INT).copyOnDeath().build()
+          expedition.name().toLowerCase() + "_last_use",
+          () -> AttachmentType.builder(() -> Instant.MIN).serialize(ExtraCodecs.INSTANT_ISO8601).copyOnDeath().build()
       );
 
-      EXPEDITION_COOLDOWNS.put(expedition, registeredAttachmentType);
+      LAST_EXPEDITION_USES.put(expedition, registeredAttachmentType);
     }
   }
 }

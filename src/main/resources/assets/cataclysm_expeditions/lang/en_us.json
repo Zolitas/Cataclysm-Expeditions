@@ -13,6 +13,7 @@
   "error.cataclysm_expeditions.start.no_structure": "Expedition structure not found!",
   "error.cataclysm_expeditions.structure_generation_failed": "Expedition structure could not be generated!",
   "error.cataclysm_expeditions.expedition_cooldown": "You are on cooldown for this Expedition: ",
+  "error.cataclysm_expeditions.already_in_lobby": "You are already signed up for another Expedition",
   "display.cataclysm_expeditions.note.the_harbinger": "Requires a Nether Star to summon",
   "display.cataclysm_expeditions.note.ancient_remnant": "Requires a Brush to summon",
   "display.cataclysm_expeditions.note.the_leviathan": "Requires a Heart of the Sea to summon",

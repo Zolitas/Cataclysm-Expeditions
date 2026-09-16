@@ -1,8 +1,12 @@
 package de.zolitas.cataclysmexpeditions.blocks;
 
 import de.zolitas.cataclysmexpeditions.CataclysmExpeditions;
+import de.zolitas.cataclysmexpeditions.config.CataclysmExpeditionsConfig;
 import de.zolitas.cataclysmexpeditions.entities.AttachmentTypesRegister;
-import de.zolitas.cataclysmexpeditions.expeditions.*;
+import de.zolitas.cataclysmexpeditions.expeditions.Expedition;
+import de.zolitas.cataclysmexpeditions.expeditions.ExpeditionLobby;
+import de.zolitas.cataclysmexpeditions.expeditions.ExpeditionLobbyUtils;
+import de.zolitas.cataclysmexpeditions.expeditions.ExpeditionUtils;
 import de.zolitas.cataclysmexpeditions.world.ExpeditionWorldUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -21,7 +25,9 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 @EventBusSubscriber(modid = CataclysmExpeditions.MODID)
 public class ExpeditionPortalBlock extends Block {
@@ -50,25 +56,34 @@ public class ExpeditionPortalBlock extends Block {
 
       Expedition expedition = state.getValue(EXPEDITION_PROPERTY);
 
+      Instant cdFinishInstant = serverPlayer
+          .getData(AttachmentTypesRegister.LAST_EXPEDITION_USES.get(expedition))
+          .plus(CataclysmExpeditionsConfig.CONFIG.expeditionCooldown.get(), ChronoUnit.SECONDS);
+      if (Instant.now().isBefore(cdFinishInstant)) {
+        serverPlayer.displayClientMessage(getExpeditionCooldownComponent(cdFinishInstant), true);
+        return;
+      }
+
+      for (ExpeditionLobby expeditionLobby : ExpeditionLobbyUtils.getLobbies()) {
+        if (expeditionLobby.containsPlayer(serverPlayer)) {
+          MutableComponent alreadyLobbyComponent = Component
+              .translatable("error.cataclysm_expeditions.already_in_lobby")
+              .withStyle(ChatFormatting.RED);
+          serverPlayer.displayClientMessage(alreadyLobbyComponent, true);
+
+          return;
+        }
+      }
+
       ExpeditionLobby lobby = ExpeditionLobbyUtils.getLobby(expedition);
       if (lobby != null) {
         lobby.addPlayer(serverPlayer, true);
         return;
       }
 
-      int expeditionCooldown = serverPlayer.getData(AttachmentTypesRegister.EXPEDITION_COOLDOWNS.get(expedition));
-      if (expeditionCooldown > 0) {
-        serverPlayer.displayClientMessage(getExpeditionCooldownComponent(expeditionCooldown), true);
-        return;
-      }
-
-      for (ExpeditionLobby expeditionLobby : ExpeditionLobbyUtils.getLobbies()) {
-        if (expeditionLobby.containsPlayer(serverPlayer)) return;
-      }
-
       ExpeditionUtils.startExpedition(
           expedition,
-          List.of(serverPlayer),
+          serverPlayer,
           serverPlayer.getServer(),
           serverPlayer.registryAccess(),
           exception -> {
@@ -87,11 +102,14 @@ public class ExpeditionPortalBlock extends Block {
     }
   }
 
-  private static @NotNull MutableComponent getExpeditionCooldownComponent(int expeditionCooldown) {
-    int totalSeconds = expeditionCooldown / 20;
-    int expeditionCooldownHours = totalSeconds / 3600;
-    int expeditionCooldownMinutes = (totalSeconds % 3600) / 60;
-    int expeditionCooldownSeconds = totalSeconds % 60;
+  private static @NotNull MutableComponent getExpeditionCooldownComponent(Instant cdFinishInstant) {
+    long untilFinish = Instant.now().until(cdFinishInstant, ChronoUnit.SECONDS);
+    Duration duration = Duration.of(untilFinish, ChronoUnit.SECONDS);
+
+    long totalSeconds = duration.getSeconds();
+    long expeditionCooldownHours = totalSeconds / 3600;
+    long expeditionCooldownMinutes = (totalSeconds % 3600) / 60;
+    long expeditionCooldownSeconds = totalSeconds % 60;
 
     MutableComponent cooldownComponent = Component
         .translatable("error.cataclysm_expeditions.expedition_cooldown")

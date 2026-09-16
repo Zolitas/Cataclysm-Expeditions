@@ -1,18 +1,15 @@
 package de.zolitas.cataclysmexpeditions.expeditions;
 
 import de.zolitas.cataclysmexpeditions.CataclysmExpeditions;
-import de.zolitas.cataclysmexpeditions.entities.AttachmentTypesRegister;
 import de.zolitas.cataclysmexpeditions.world.ExpeditionWorldUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Display;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 
 import javax.annotation.Nullable;
@@ -52,9 +49,9 @@ public class ExpeditionLobbyUtils {
     expeditionLobbies.forEach((expedition, expeditionLobby) -> {
       if (!expeditionLobby.isFinishedGenerating()) return;
 
-      expeditionLobby.decreaseTTL();
+      expeditionLobby.decreaseDuration();
 
-      if (expeditionLobby.getTtl() <= 0) {
+      if (expeditionLobby.getDuration() <= 0) {
         expeditionsToRemove.add(expedition);
       }
     });
@@ -71,33 +68,16 @@ public class ExpeditionLobbyUtils {
   }
 
   @SubscribeEvent
-  private static void onPlayerTick(PlayerTickEvent.Post event) {
-    Player player = event.getEntity();
-
-    if (player.level().isClientSide()) return;
-
-    AttachmentTypesRegister.EXPEDITION_COOLDOWNS.forEach((expedition, cooldown) -> {
-      int cdValue = player.getData(cooldown);
-      if (cdValue > 0) {
-        player.setData(cooldown, cdValue - 1);
-      }
-    });
-  }
-
-  @SubscribeEvent
   private static void onServerStarted(ServerStartedEvent event) {
     // i am so sorry for anyone reading this code
-    new Thread(){
-      @Override
-      public void run() {
-        try {
-          Thread.sleep(Duration.ofSeconds(2));
-        } catch (InterruptedException exception) {
-          //ignored
-        }
-        clearAllLobbyDisplays(event.getServer());
+    new Thread(() -> {
+      try {
+        Thread.sleep(Duration.ofSeconds(2));
+      } catch (InterruptedException exception) {
+        //ignored
       }
-    }.start();
+      clearAllLobbyDisplays(event.getServer());
+    }).start();
   }
 
   public static Display.TextDisplay getLobbyTextDisplay(Expedition expedition, MinecraftServer server) {
