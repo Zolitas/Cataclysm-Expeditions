@@ -10,12 +10,14 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Display;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
@@ -34,10 +36,12 @@ import net.minecraft.world.level.saveddata.SavedData;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.level.LevelEvent;
+import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
+import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
@@ -287,5 +291,39 @@ public class ExpeditionWorldUtils {
     for (ChunkPos hubChunk : hubChunks) {
       serverLevel.setChunkForced(hubChunk.x, hubChunk.z, add);
     }
+  }
+
+  public static void clearAllLobbyDisplays(MinecraftServer server) {
+    for (Expedition expedition : Expedition.values()) {
+      Display.TextDisplay textDisplay = getLobbyTextDisplay(expedition, server);
+      if (textDisplay == null) continue;
+      textDisplay.setText(Component.empty());
+    }
+  }
+
+  @SubscribeEvent
+  private static void onServerStarted(ServerStartedEvent event) {
+    // i am so sorry for anyone reading this code
+    new Thread(() -> {
+      try {
+        Thread.sleep(Duration.ofSeconds(2));
+      } catch (InterruptedException exception) {
+        //ignored
+      }
+      clearAllLobbyDisplays(event.getServer());
+    }).start();
+  }
+
+  public static Display.TextDisplay getLobbyTextDisplay(Expedition expedition, MinecraftServer server) {
+    ServerLevel expeditionLevel = getExpeditionLevel(server, false);
+    assert expeditionLevel != null;
+    String lobbyDisplayUUID = getExpeditionWorldSavedData(expeditionLevel).getLobbyDisplayUUID(expedition);
+    if (lobbyDisplayUUID == null) return null;
+    Entity lobbyDisplay = expeditionLevel.getEntity(UUID.fromString(lobbyDisplayUUID));
+
+    if (!(lobbyDisplay instanceof Display.TextDisplay textDisplay)) {
+      return null;
+    }
+    return textDisplay;
   }
 }

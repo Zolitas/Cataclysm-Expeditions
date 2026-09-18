@@ -2,6 +2,7 @@ package de.zolitas.cataclysmexpeditions.expeditions;
 
 import de.zolitas.cataclysmexpeditions.config.CataclysmExpeditionsConfig;
 import de.zolitas.cataclysmexpeditions.entities.AttachmentTypesRegister;
+import de.zolitas.cataclysmexpeditions.world.ExpeditionWorldUtils;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.network.chat.Component;
@@ -41,7 +42,7 @@ public class ExpeditionLobby {
   public ExpeditionLobby(Expedition expedition, MinecraftServer server) {
     this.expedition = expedition;
     bossBar.setProgress(0);
-    lobbyTextDisplay = ExpeditionLobbyUtils.getLobbyTextDisplay(expedition, server);
+    lobbyTextDisplay = ExpeditionWorldUtils.getLobbyTextDisplay(expedition, server);
   }
 
   public void removed() {
