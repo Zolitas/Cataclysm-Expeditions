@@ -16,5 +16,9 @@
   "error.cataclysm_expeditions.already_in_lobby": "Du bist schon für eine andere Expedition angemeldet",
   "display.cataclysm_expeditions.note.the_harbinger": "Benötigt einen Netherstern zum Beschwören",
   "display.cataclysm_expeditions.note.ancient_remnant": "Benötigt einen Pinsel zum Beschwören",
-  "display.cataclysm_expeditions.note.the_leviathan": "Benötigt ein Herz des Meeres zum Beschwören"
+  "display.cataclysm_expeditions.note.the_leviathan": "Benötigt ein Herz des Meeres zum Beschwören",
+  "gui.cataclysm_expeditions.death_in_expedition": "Du bist gestorben!",
+  "biome.cataclysm_expeditions.expedition_world": "Expeditionswelt",
+  "dimension.cataclysm_expeditions.expedition_world": "Expeditionswelt",
+  "dimension.cataclysm_expeditions.expedition_world_nether": "Expeditionswelt"
 }
