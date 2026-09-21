@@ -139,14 +139,17 @@ public class ExpeditionLobby {
 
   private void teleportPlayer(ServerPlayer player) {
     if (callbackData == null) return;
+    MinecraftServer server = player.getServer();
+    if (server == null) return;
 
-    player.teleportTo(
-        callbackData.getLevel(),
-        callbackData.getStartPos().getX() + expedition.getTeleportationOffset().x(),
-        callbackData.getStartPos().getY() + expedition.getTeleportationOffset().y(),
-        callbackData.getStartPos().getZ() + expedition.getTeleportationOffset().z(),
-        expedition.getTeleportationOffset().yaw(),
-        0
-    );
+    server.execute(() ->
+        player.teleportTo(
+            callbackData.getLevel(),
+            callbackData.getStartPos().getX() + expedition.getTeleportationOffset().x(),
+            callbackData.getStartPos().getY() + expedition.getTeleportationOffset().y(),
+            callbackData.getStartPos().getZ() + expedition.getTeleportationOffset().z(),
+            expedition.getTeleportationOffset().yaw(),
+            0
+        ));
   }
 }
