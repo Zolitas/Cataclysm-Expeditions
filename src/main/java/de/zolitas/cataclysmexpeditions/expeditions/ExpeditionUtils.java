@@ -1,13 +1,17 @@
 package de.zolitas.cataclysmexpeditions.expeditions;
 
+import de.zolitas.cataclysmexpeditions.CataclysmExpeditions;
 import de.zolitas.cataclysmexpeditions.blocks.BlocksRegister;
 import de.zolitas.cataclysmexpeditions.config.CataclysmExpeditionsConfig;
 import de.zolitas.cataclysmexpeditions.world.ExpeditionWorldUtils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,13 +21,42 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+@EventBusSubscriber(modid = CataclysmExpeditions.MODID)
 public class ExpeditionUtils {
+  @SubscribeEvent
+  private static void onDeathInExpedition(LivingDeathEvent event) {
+    if (!(event.getEntity() instanceof ServerPlayer player)) return;
+    if (!ExpeditionWorldUtils.isExpeditionDimension(player.level().dimension().location())) return;
+
+    // player would die inside an expedition dimension here
+    // we want to prevent that and send them back to the hub.
+    event.setCanceled(true);
+
+    player.setHealth(player.getMaxHealth());
+    player.getFoodData().eat(1000, 1000);
+    player.clearFire();
+    player.removeAllEffects();
+
+    MutableComponent component = Component
+        .translatable("gui.cataclysm_expeditions.death_in_expedition")
+        .withStyle(ChatFormatting.RED);
+    player.connection.send(new ClientboundSetTitleTextPacket(component));
+
+    ExpeditionLobbyUtils
+        .getLobbies()
+        .forEach(lobby -> lobby.removePlayer(player));
+    ExpeditionWorldUtils.teleportToHub(player);
+  }
+
   public static void startExpedition(Expedition expedition, ServerPlayer player,
                                      MinecraftServer server, RegistryAccess registryAccess, Consumer<ExpeditionException> exceptionHandler)
   {

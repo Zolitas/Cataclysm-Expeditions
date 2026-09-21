@@ -7,6 +7,7 @@
   "gui.cataclysm_expeditions.expedition_loading": "Expedition loading…",
   "gui.cataclysm_expeditions.expedition_anchor.confirm.title": "Do you want to leave the Expedition?",
   "gui.cataclysm_expeditions.expedition_anchor.confirm.message": "You will be teleported back to the Hub and you won't be able to return to this structure.",
+  "gui.cataclysm_expeditions.death_in_expedition": "You died!",
   "biome.cataclysm_expeditions.expedition_world": "Expedition World",
   "dimension.cataclysm_expeditions.expedition_world": "Expedition World",
   "dimension.cataclysm_expeditions.expedition_world_nether": "Expedition World",

@@ -13,7 +13,6 @@
     "CursedTombstoneEntityMixin",
     "PlayerMixin",
     "RuinedCitadelStructureMixin",
-    "ServerPlayerMixin",
     "SunkenCityStructureMixin"
   ]
 }
